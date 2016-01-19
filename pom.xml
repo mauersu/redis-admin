@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mauersu</groupId>
     <artifactId>redis-admin</artifactId>
-    <version>0.0.1Alpha1-SNAPSHOT</version>
+    <version>0.0.1Alpha1</version>
     <packaging>war</packaging>
 
     <name>redis admin</name>
