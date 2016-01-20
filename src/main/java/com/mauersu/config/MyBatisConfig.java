@@ -30,7 +30,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * MyBatis配置文件
+ * MyBatis properties
  *
  * Created by Silence on 2014-12-08.
 

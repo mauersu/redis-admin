@@ -4,7 +4,7 @@ import cn.workcenter.common.constant.WebConstant;
 
 public enum WorkcenterCodeEnum implements WebConstant{
 	//{1:error 2:success}{001:workcenter model}{0001:workcenter first-error}
-	OK_REDISKV_UPDATE("20010001", "更新成功"),
+	OK_REDISKV_UPDATE("20010001", "update success"),
 	OK_SUCCESS("20010000", "SUCCESS"),
 	;
 	

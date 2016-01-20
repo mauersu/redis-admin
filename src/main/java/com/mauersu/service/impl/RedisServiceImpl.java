@@ -8,7 +8,6 @@ import cn.workcenter.common.WorkcenterResult;
 import cn.workcenter.common.constant.WebConstant;
 
 import com.mauersu.dao.RedisDao;
-import com.mauersu.dao.RedisTemplateFactory;
 import com.mauersu.service.RedisService;
 
 @Service

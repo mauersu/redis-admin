@@ -54,10 +54,10 @@
 	<div class="container-fluid">
 	
 		<div class="row">
-			<!-- 左侧列表  -->
+			<!-- left nav  -->
 			<jsp:include page="menu.jsp"></jsp:include>
 			
-			<!-- 右侧列表  -->
+			<!-- right content -->
 			
 			<jsp:include page="${viewPage }"></jsp:include>
 			

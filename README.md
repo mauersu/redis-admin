@@ -1,5 +1,6 @@
 # redis-admin [![Build Status](https://travis-ci.org/mauersu/redis-admin.svg?branch=master)](https://travis-ci.org/mauersu/redis-admin)
 [![GitHub release](https://img.shields.io/badge/release-download-orange.svg)](https://github.com/mauersu/redis-admin/releases)
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 This is a redis client web tool written based on Java EE and Jedis. It's my objective to build the most convenient redis client web tool in the world. In the first place, it will facilitate in editing redis data, such as: add, update, delete, search, cut, copy, paste etc.
 
@@ -22,12 +23,12 @@ This is a redis client web tool written based on Java EE and Jedis. It's my obje
  	* Support multiple language, now support English and Chinese
 
 
-## redis-admin使用帮助
+## redis-admin Tutorial
 
-### redis-admin配置介绍
+### redis-admin properties
 
-`第一步`：修改配置文件 redis.properties
-首先设置redis服务器数量redis.server.num，然后参照例子设置redis服务器登录参数，如下：
+`first step`:Edit file:'redis.properties' :
+first of all, set up redis.server.num, this is redis.properties example:
 
 ```
 redis.server.num=1
@@ -43,26 +44,26 @@ redis.host.2=yours
 redis.name.2=yours
 redis.port.2=yours
 redis.password.2=yours
-
 ```
 
-`第二步`：编辑项目中application.properties，配置如下：
+`second step`:Edit file:'application.properties' :
 
 ```
-
 ####Security Manager
 manager.username=admin
 manager.password=admin
-
 ```
 
-`第三步`：打包运行项目
+`third step`: deploy project
 
-执行maven命令：mvn clean package
-target文件夹下生成的redis-admin.war即为项目部署文件，将其放置到对应服务器目录下，启动服务器即可。例如：tomcat的webapps文件夹下。
+run maven command : mvn clean package
+you will found war in 'target/redis-admin.war'
+move war to ../tomcat/wabapps and start tomcat 
 
-`第四步`：访问项目
+`last step`: Visit redis-admin
 
-启动web服务器后，访问地址：http://IP:[port]/redis-admin/redis，采用配置文件中manager.username和manager.password设置值进行登录。
+open brower and visit: http://IP:[port]/redis-admin/redis
+enter username:{manager.username} and password:{manager.password}
+have fun ^ ^ 
 
 ![img-source-from-https://github.com/docker/dockercraft](https://github.com/docker/dockercraft/raw/master/docs/img/contribute.png?raw=true)

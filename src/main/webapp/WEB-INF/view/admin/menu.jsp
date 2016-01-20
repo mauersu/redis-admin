@@ -3,7 +3,7 @@
 	String basePath = request.getContextPath();
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!-- 左侧列表  -->
+<!-- left nav  -->
 <div class="col-sm-1 col-md-1 sidebar">
 
 	<ul class="nav nav-sidebar">

@@ -106,8 +106,8 @@
 			
 			var checkedNum = $("#listTable").find("input:checkbox[name='redisKey']:checked").length;
 			if(checkedNum > 1||checkedNum<=0) {
-				$("#model_title").text("警告");
-				$("#model_content").text("只能选择一个要编辑的项");
+				$("#model_title").text("warning");
+				$("#model_content").text("please choose one to edit");
 				$('#myModal').modal();
 				return ;
 			}
@@ -203,8 +203,8 @@
 			deleteKeys = deleteKeys.substring(1);
 			
 			if(deleteKeys == '') {
-				$("#model_title").text("警告");
-				$("#model_content").text("请先选择要删除的项");
+				$("#model_title").text("warning");
+				$("#model_content").text("please choose one to delete");
 				$('#myModal').modal();
 				return;
 			}

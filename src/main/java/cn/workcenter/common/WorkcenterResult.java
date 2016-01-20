@@ -4,13 +4,13 @@ import cn.workcenter.common.constant.WebConstant;
 
 public class WorkcenterResult implements WebConstant{
 	
-	private String resultCode; //200 成功    500服务器错误   600执行业务异常
+	private String resultCode; //200 success   500 server-error 600 business-exception
 	
-	private String resultMsg;  //说明
+	private String resultMsg;  //detail
 	
-	private Object data;       //附加信息
+	private Object data;       //attachment
 	
-	private WorkcenterCodeEnum codeEnum;//错误码及具体错误说明
+	private WorkcenterCodeEnum codeEnum;//error-code-msg enum
 
 	private WorkcenterResult() {
 		
@@ -49,24 +49,24 @@ public class WorkcenterResult implements WebConstant{
 	
 	public static class Builder {
 		
-		private String resultCode; //200 成功  SUCCESS200    500服务器错误  ERROR500  600执行业务异常  BUSINESSEXCEPTION600
+		private String resultCode; //200  SUCCESS200    500server-error  ERROR500  600business-exception  BUSINESSEXCEPTION600
 		
-		private String resultMsg;  //说明
+		private String resultMsg;  //detail
 		
-		private Object data;       //附加信息
+		private Object data;       //attachment
 		
-		private WorkcenterCodeEnum codeEnum;//错误码及具体错误说明
+		private WorkcenterCodeEnum codeEnum;//error-code-msg enum
 		
 		Builder() {
 			resultCode = SUCCESS200;
-			resultMsg = "请求成功";
-			data = "无";
+			resultMsg = "request success";
+			data = "null";
 			codeEnum = WorkcenterCodeEnum.valueOf(OK_SUCCESS);
 		}
 		
 		public Builder setOK(WorkcenterCodeEnum codeEnum, Object data) {
 			resultCode = SUCCESS200;
-			resultMsg = "请求成功";
+			resultMsg = "request success";
 			this.data=data;
 			this.codeEnum = codeEnum;
 			return this;
@@ -74,7 +74,7 @@ public class WorkcenterResult implements WebConstant{
 		
 		public Builder setOK(WorkcenterCodeEnum codeEnum) {
 			resultCode = SUCCESS200;
-			resultMsg = "请求成功";
+			resultMsg = "request success";
 			this.data=null;
 			this.codeEnum = codeEnum;
 			return this;
@@ -82,7 +82,7 @@ public class WorkcenterResult implements WebConstant{
 		
 		public Builder setNO(WorkcenterCodeEnum codeEnum) {
 			resultCode = EXCEPTION600;
-			resultMsg = "执行业务异常";
+			resultMsg = "business exception";
 			this.data=null;
 			this.codeEnum = codeEnum;
 			return this;
