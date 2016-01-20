@@ -4,11 +4,11 @@ import cn.workcenter.common.WorkcenterResult;
 
 public interface RedisService {
 
-	void addKV(String serverName, int dbIndex, String dataType, String key,
-			String[] values, Double[] scores, String[] members, String[] fields);
+	void addRedisServer(String name, String host, int port, String password);
+	
+	void addKV(String serverName, int dbIndex, String dataType, String key, String[] values, Double[] scores, String[] members, String[] fields);
 
-	WorkcenterResult getKV(String serverName, int dbIndex, String dataType,
-			String key);
+	WorkcenterResult getKV(String serverName, int dbIndex, String dataType, String key);
 
 	void delKV(String serverName, int dbIndex, String deleteKeys);
 

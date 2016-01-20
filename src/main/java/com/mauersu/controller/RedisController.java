@@ -1,7 +1,5 @@
 package com.mauersu.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +20,7 @@ import cn.workcenter.common.util.StringUtil;
 import com.mauersu.service.RedisService;
 import com.mauersu.service.ViewService;
 import com.mauersu.util.Constant;
+import com.mauersu.util.ConvertUtil;
 import com.mauersu.util.QueryEnum;
 import com.mauersu.util.RKey;
 import com.mauersu.util.RedisApplication;
@@ -49,6 +48,20 @@ public class RedisController extends RedisApplication implements Constant{
 		request.setAttribute("basePath", BASE_PATH);
 		request.setAttribute("viewPage", "home.jsp");
 		return "admin/main";
+	}
+	
+	@RequestMapping(value="/addServer", method=RequestMethod.POST)
+	@ResponseBody
+	public Object addServer(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String host, 
+			@RequestParam String name,
+			@RequestParam int port,
+			@RequestParam String password) {
+		
+		redisService.addRedisServer(name, host, port, password);
+		//viewService.refresh();
+		
+		return WorkcenterResponseBodyJson.custom().build();
 	}
 	
 	@RequestMapping(value="/serverTree", method=RequestMethod.GET)
@@ -99,7 +112,7 @@ public class RedisController extends RedisApplication implements Constant{
 			@RequestParam String key) {
 		
 		String[] value = request.getParameterValues("value");
-		Double[] score = convert2Double(request.getParameterValues("score"));
+		Double[] score = ConvertUtil.convert2Double(request.getParameterValues("score"));
 		String[] member = request.getParameterValues("member");
 		String[] field = request.getParameterValues("field");
 		
@@ -130,15 +143,5 @@ public class RedisController extends RedisApplication implements Constant{
 		
 		return WorkcenterResponseBodyJson.custom().build();
 		
-	}
-
-	private Double[] convert2Double(String[] strings) {
-		if(strings==null) return null;
-		List<Double> doubleList = new ArrayList<Double>();
-		for(String str: strings) {
-			Double d = Double.parseDouble(str);
-			doubleList.add(d);
-		}
-		return (Double[]) doubleList.toArray();
 	}
 }

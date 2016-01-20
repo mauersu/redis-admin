@@ -17,8 +17,8 @@
 				<p id="model_content">model_content</p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="back_btn btn btn-default" data-dismiss="modal">关闭</button>
-				<button type="button" class="back_btn btn btn-default" data-dismiss="modal">返回列表</button>
+				<button type="button" class="back_btn btn btn-default" data-dismiss="modal">close</button>
+				<button type="button" class="back_btn btn btn-default" data-dismiss="modal">back to list</button>
 				<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
 			</div>
 		</div>

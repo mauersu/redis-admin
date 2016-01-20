@@ -7,12 +7,13 @@
 
 <div class="col-sm-11 col-sm-offset-1 col-md-11 col-md-offset-1 main">
 	
-	<div class="col-sm-6 col-md-6">
+	<div class="col-sm-4 col-md-4">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addServerModal" data-whatever="addServer">addServer</button>
 		<button type="button" class="refresh_btn btn btn-primary" >refresh</button>
 	</div>
 	
 	<!-- <div class="row col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2"> -->
-	<div class="row col-sm-offset-6 col-md-offset-6">
+	<div class="row col-sm-offset-4 col-md-offset-4">
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" data-whatever="add">add</button>
 		<button type="button" class="edit_btn btn btn-primary" >view/update</button>
 		<button value1="delete" type="button" class="delete_btn btn btn-primary" >delete</button>
@@ -39,13 +40,13 @@
 		</div>
 	</div>
 
-	<div class="col-sm-6 col-md-6">
+	<div class="col-sm-4 col-md-4">
 		<div class="zTreeDemoBackground left">
 			<ul id="treeDemo" class="ztree"></ul>
 		</div>
 	</div>
 	
-	<div class="table-responsive col-sm-offset-6 col-md-offset-4">
+	<div class="table-responsive col-sm-offset-4 col-md-offset-4">
 		<table id="listTable" class="table table-striped" >
 			<thead>
 				<tr>
@@ -70,6 +71,7 @@
 </div>
 
 <jsp:include page="./addModal.jsp"></jsp:include>
+<jsp:include page="./addServerModal.jsp"></jsp:include>
 <jsp:include page="./updateModal.jsp"></jsp:include>
 
 <script src="<%=basePath%>/js/admin/redis/dataTypeLineHtml.js"></script>

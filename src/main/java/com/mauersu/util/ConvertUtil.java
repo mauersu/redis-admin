@@ -1,6 +1,7 @@
 package com.mauersu.util;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,5 +19,15 @@ public class ConvertUtil {
 			RKey rkey = new RKey(converted, dateType); 
 			tempList.add(rkey);
 		}
+	}
+	
+	public static Double[] convert2Double(String[] strings) {
+		if(strings==null) return null;
+		List<Double> doubleList = new ArrayList<Double>();
+		for(String str: strings) {
+			Double d = Double.parseDouble(str);
+			doubleList.add(d);
+		}
+		return (Double[]) doubleList.toArray();
 	}
 }

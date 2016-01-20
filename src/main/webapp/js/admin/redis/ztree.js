@@ -5,6 +5,20 @@ $(document).ready(function() {
 		var url = basePath + '/redis/refresh';
 		refreshZTree(url);
 	});
+	
+	$(".addServer_btn").on("click", function() {
+		var url = basePath + '/redis/addServer';
+		var formParam = $("#addServerModalForm").formSerialize();
+		$.ajax({
+			type: "post",
+			url : url,
+			dataType: "json",
+			data: formParam,
+			success : function(data) {
+				window.location.href = basePath + '/redis/stringList/default/0';
+			}
+		})
+	})
 });
 
 function initZTree(url) {

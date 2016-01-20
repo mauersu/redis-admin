@@ -1,6 +1,7 @@
 package com.mauersu.service.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -12,7 +13,6 @@ import org.springframework.util.StringUtils;
 import com.mauersu.dao.RedisTemplateFactory;
 import com.mauersu.service.ViewService;
 import com.mauersu.util.Constant;
-import com.mauersu.util.InitContext;
 import com.mauersu.util.RKey;
 import com.mauersu.util.RedisApplication;
 import com.mauersu.util.ztree.RedisZtreeUtil;
@@ -20,8 +20,7 @@ import com.mauersu.util.ztree.ZNode;
 
 @Service
 public class ViewServiceImpl extends RedisApplication implements ViewService, Constant {
-	@Autowired
-	InitContext initContext;
+
 	@Autowired
 	public void setRedisTemplateFactory(RedisTemplateFactory redisTemplateFactory) {
 		this.redisTemplateFactory = redisTemplateFactory;
@@ -51,22 +50,23 @@ public class ViewServiceImpl extends RedisApplication implements ViewService, Co
 		Set<ZNode> zTree = null;
 		if(permit) {
 			try {
-				refreshKeys(DEFAULT_REDISSERVERNAME, DEFAULT_DBINDEX);
-				zTree = refreshServerTree(DEFAULT_REDISSERVERNAME, DEFAULT_DBINDEX);
-				System.out.println("yes permit");
+				for(Map<String, Object> redisServerMap : RedisApplication.redisServerCache) {
+					refreshKeys((String)redisServerMap.get("name"), DEFAULT_DBINDEX);
+					zTree = refreshServerTree((String)redisServerMap.get("name"), DEFAULT_DBINDEX);
+					// test limit flow System.out.println("yes permit");
+				}
 			} finally {
 				finishUpdate();
 			}
-			
 		} else {
-			System.out.println("no permit");
+			// test limit flow System.out.println("no permit");
 		}
 		return zTree;
 	}
 	
 	private void refreshKeys(String serverName, int dbIndex) {
 		RedisTemplate redisTemplate = RedisApplication.redisTemplatesMap.get(serverName);
-		initContext.initRedisKeysCache(redisTemplate, serverName, dbIndex);
+		initRedisKeysCache(redisTemplate, serverName, dbIndex);
 	}
 
 	private Set<ZNode> refreshServerTree() {

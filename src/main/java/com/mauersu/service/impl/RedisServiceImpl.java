@@ -9,11 +9,18 @@ import cn.workcenter.common.constant.WebConstant;
 
 import com.mauersu.dao.RedisDao;
 import com.mauersu.service.RedisService;
+import com.mauersu.util.RedisApplication;
 
 @Service
-public class RedisServiceImpl implements RedisService, WebConstant {
+public class RedisServiceImpl extends RedisApplication implements RedisService, WebConstant  {
 	@Autowired
 	private RedisDao redisDao;
+	
+	@Override
+	public void addRedisServer(String name, String host, int port, String password) {
+		createRedisConnection(name, host, port, password);
+	}
+	
 	@Override
 	public void addKV(String serverName, int dbIndex, String dataType,
 			String key, 
@@ -66,6 +73,5 @@ public class RedisServiceImpl implements RedisService, WebConstant {
 		redisDao.delRedisKeys(serverName, dbIndex, deleteKeys);
 		return;
 	}
-	
 	
 }

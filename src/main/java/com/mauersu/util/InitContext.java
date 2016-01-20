@@ -37,20 +37,7 @@ public class InitContext extends RedisApplication implements Constant  {
 				int port = Integer.parseInt(env.getProperty(REDISPROPERTIES_PORT_PROFIXKEY + i));
 				String password = env.getProperty(REDISPROPERTIES_PASSWORD_PROFIXKEY + i);
 				
-				JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
-				connectionFactory.setHostName(host);
-				connectionFactory.setPort(port);
-				if(!StringUtils.isEmpty(password))
-					connectionFactory.setPassword(password);
-				connectionFactory.afterPropertiesSet();
-				RedisTemplate redisTemplate = new StringRedisTemplate();
-				redisTemplate.setConnectionFactory(connectionFactory);
-				redisTemplate.afterPropertiesSet();
-				RedisApplication.redisTemplatesMap.put(name, redisTemplate);
-				
-				initRedisKeysCache(redisTemplate, name, 0);
-				
-				RedisZtreeUtil.initRedisNavigateZtree(name);
+				createRedisConnection(name, host, port, password);
 				
 				runUpdateLimit();
 			}
@@ -58,17 +45,6 @@ public class InitContext extends RedisApplication implements Constant  {
 			e.printStackTrace();
 			throw new RedisInitException(e);
 		}
-	}
-
-	public void initRedisKeysCache(RedisTemplate redisTemplate, String serverName , int dbIndex) {
-		RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
-		connection.select(dbIndex);
-		Set<byte[]> keysSet = connection.keys("*".getBytes());
-		List<RKey> tempList = new ArrayList<RKey>();
-		ConvertUtil.convertByteToString(connection, keysSet, tempList);
-		CopyOnWriteArrayList<RKey> redisKeysList = new CopyOnWriteArrayList<RKey>(tempList);
-		redisKeysListMap.put(serverName+dbIndex, redisKeysList);
-		connection.select(dbIndex);
 	}
 	
 }
