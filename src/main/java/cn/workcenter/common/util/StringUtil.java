@@ -1,6 +1,5 @@
 package cn.workcenter.common.util;
 
-import java.security.MessageDigest;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -9,8 +8,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.util.StringUtils;
-
-import cn.workcenter.common.exception.ParameterEmptyException;
 
 public class StringUtil {
 	
