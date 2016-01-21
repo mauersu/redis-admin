@@ -9,17 +9,14 @@ import com.mauersu.util.RKey;
 public class RedisZtreeUtil implements Constant{
 
 	public static void initRedisNavigateZtree(String serverName) {
-		ZNode serverZnode = ZNode.makeZNode(serverName, new RedisAttach(serverName));
-		ZNode dbIndexZnode = getRedisNavigateZtree(serverName, 0);
-		serverZnode.addChildren(dbIndexZnode);
-		redisNavigateZtree.add(serverZnode);
+		initRedisNavigateZtree(serverName, DEFAULT_DBINDEX);
 	}
 
 	public static ZNode initRedisNavigateZtree(String serverName, int dbIndex) {
 		ZNode serverZnode = null;
-		int serverZnodeIndex = redisNavigateZtree.indexOf(serverName);
+		serverZnode = ZNode.makeZNode(serverName, new RedisAttach(serverName));
+		int serverZnodeIndex = redisNavigateZtree.indexOf(serverZnode);
 		if(serverZnodeIndex<0) {
-			serverZnode = ZNode.makeZNode(serverName, new RedisAttach(serverName));
 			redisNavigateZtree.add(serverZnode);
 		} else {
 			serverZnode = redisNavigateZtree.get(serverZnodeIndex);
@@ -33,9 +30,9 @@ public class RedisZtreeUtil implements Constant{
 	public static ZNode refreshRedisNavigateZtree(String serverName, int dbIndex) {
 		ZNode serverZnode = ZNode.makeZNode(serverName, new RedisAttach(serverName));
 		ZNode dbIndexZnode = getRedisNavigateZtree(serverName, 0);
-		serverZnode.addChildren(dbIndexZnode);
-		int serverZnodeIndex = redisNavigateZtree.indexOf(serverName);
-		if(serverZnodeIndex>0) {
+		serverZnode.resetChildren(dbIndexZnode);
+		int serverZnodeIndex = redisNavigateZtree.indexOf(serverZnode);
+		if(serverZnodeIndex>=0) {
 			redisNavigateZtree.remove(serverZnodeIndex);
 		}
 		redisNavigateZtree.add(serverZnode);

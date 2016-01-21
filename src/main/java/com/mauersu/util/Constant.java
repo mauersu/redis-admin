@@ -33,7 +33,7 @@ public interface Constant {
 	
 	
 	/** default **/
-	public static final String DEFAULT_REDISSERVERNAME 										= "default";
+	//public static final String DEFAULT_REDISSERVERNAME 										= "default";
 	public static final int DEFAULT_DBINDEX 												= 0;
 	
 	/** query key **/

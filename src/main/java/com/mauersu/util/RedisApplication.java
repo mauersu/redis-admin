@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.StringUtils;
 
 import com.mauersu.dao.RedisTemplateFactory;
+import com.mauersu.exception.RedisConnectionException;
 import com.mauersu.util.ztree.RedisZtreeUtil;
 
 public abstract class RedisApplication implements Constant{
@@ -82,7 +83,7 @@ public abstract class RedisApplication implements Constant{
 	protected RedisConnection getRedisConnection() {
 		RedisConnection redisConnection = redisConnectionThreadLocal.get();
 		if(redisConnection==null) {
-			return getRedisConnection(DEFAULT_REDISSERVERNAME, DEFAULT_DBINDEX);
+			throw new RedisConnectionException("redisConnectionThreadLocal is null");
 		}
 		return redisConnection;
 	}

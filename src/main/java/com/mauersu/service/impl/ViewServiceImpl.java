@@ -28,19 +28,17 @@ public class ViewServiceImpl extends RedisApplication implements ViewService, Co
 
 	@Override
 	public Set<ZNode> getLeftTree() {
-		return getLeftTree(DEFAULT_REDISSERVERNAME, DEFAULT_DBINDEX);
-	}
-
-	public Set<ZNode> getLeftTree(String redisName, int dbIndex) {
-		return getLeftTree(redisName, dbIndex, useVMCache);
+		return getLeftTree(useVMCache);
 	}
 	
-	private Set<ZNode> getLeftTree(String redisName, int dbIndex, boolean useVMCache) {
+	private Set<ZNode> getLeftTree(boolean useVMCache) {
 		if(!useVMCache) {
 			//not finish
 			return null;
 		}
-		RedisZtreeUtil.initRedisNavigateZtree(redisName, dbIndex);
+		for(Map<String, Object> redisServerMap : RedisApplication.redisServerCache) {
+			RedisZtreeUtil.initRedisNavigateZtree((String)redisServerMap.get("name"), DEFAULT_DBINDEX);
+		}
 		return new TreeSet<ZNode>(redisNavigateZtree);
 	}
 	
@@ -69,10 +67,6 @@ public class ViewServiceImpl extends RedisApplication implements ViewService, Co
 		initRedisKeysCache(redisTemplate, serverName, dbIndex);
 	}
 
-	private Set<ZNode> refreshServerTree() {
-		return refreshServerTree(DEFAULT_REDISSERVERNAME, DEFAULT_DBINDEX);
-	}
-	
 	private Set<ZNode> refreshServerTree(String serverName,
 			int dbIndex) {
 		 RedisZtreeUtil.refreshRedisNavigateZtree(serverName, dbIndex) ;

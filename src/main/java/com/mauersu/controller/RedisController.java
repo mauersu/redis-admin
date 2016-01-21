@@ -39,6 +39,9 @@ public class RedisController extends RedisApplication implements Constant{
 	public Object home(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("basePath", BASE_PATH);
 		request.setAttribute("viewPage", "home.jsp");
+		String defaultServerName = (String) (RedisApplication.redisServerCache.get(0)==null?"":RedisApplication.redisServerCache.get(0).get("name"));
+		request.setAttribute("serverName", defaultServerName);
+		request.setAttribute("dbIndex", DEFAULT_DBINDEX);
 		return "admin/main";
 	}
 	
@@ -47,6 +50,10 @@ public class RedisController extends RedisApplication implements Constant{
 		
 		request.setAttribute("basePath", BASE_PATH);
 		request.setAttribute("viewPage", "home.jsp");
+		
+		String defaultServerName = (String) (RedisApplication.redisServerCache.get(0)==null?"":RedisApplication.redisServerCache.get(0).get("name"));
+		request.setAttribute("serverName", defaultServerName);
+		request.setAttribute("dbIndex", DEFAULT_DBINDEX);
 		return "admin/main";
 	}
 	
@@ -93,6 +100,7 @@ public class RedisController extends RedisApplication implements Constant{
 		String[] keyPrefixs = request.getParameterValues("keyPrefixs");
 		Set<RKey> redisKeys = viewService.getRedisKeys(serverName, dbIndex, keyPrefixs, queryKey, queryValue);
 		
+		request.setAttribute("redisServers", redisServerCache);
 		request.setAttribute("basePath", BASE_PATH);
 		request.setAttribute("queryLabel_ch", queryKey_ch);
 		request.setAttribute("queryLabel_en", queryKey);

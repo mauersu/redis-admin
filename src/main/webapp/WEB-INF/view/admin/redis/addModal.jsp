@@ -17,7 +17,14 @@
 					<div class="form-group">
 						<label for="recipient-name" class="control-label">serverName:</label> 
 						<select name="serverName" class="form-control">
-						  <option checked=true value="default">default</option>
+							<c:forEach items="${redisServers }" var="redisServer" varStatus="status">
+								<c:if test="${status.index == 0}">
+									<option checked=true value="${redisServer.name }">${redisServer.name }</option>
+								</c:if>
+								<c:if test="${status.index != 0}">
+									<option value="${redisServer.name }">${redisServer.name }</option>
+								</c:if>
+							</c:forEach>
 						</select>
 					</div>
 					
