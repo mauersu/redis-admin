@@ -22,7 +22,7 @@ This is a redis client web tool written based on Java EE and Jedis. It's my obje
  	* Support time to live
  	* Support multiple language, now support English and Chinese
 
-* **Index - Showcase **
+##  Screenshots
 ![Showcase](http://mauersu.github.io/img/redis_admin_zset.png)
 
 ##  Quick Start
