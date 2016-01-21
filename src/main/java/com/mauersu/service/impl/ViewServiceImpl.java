@@ -15,6 +15,7 @@ import com.mauersu.service.ViewService;
 import com.mauersu.util.Constant;
 import com.mauersu.util.RKey;
 import com.mauersu.util.RedisApplication;
+import com.mauersu.util.RefreshModeEnum;
 import com.mauersu.util.ztree.RedisZtreeUtil;
 import com.mauersu.util.ztree.ZNode;
 
@@ -27,19 +28,27 @@ public class ViewServiceImpl extends RedisApplication implements ViewService, Co
 	}
 
 	@Override
-	public Set<ZNode> getLeftTree() {
-		return getLeftTree(useVMCache);
+	public void changeRefreshMode(String mode) {
+		refreshMode = RefreshModeEnum.valueOf(mode);
 	}
 	
-	private Set<ZNode> getLeftTree(boolean useVMCache) {
-		if(!useVMCache) {
-			//not finish
-			return null;
-		}
-		for(Map<String, Object> redisServerMap : RedisApplication.redisServerCache) {
-			RedisZtreeUtil.initRedisNavigateZtree((String)redisServerMap.get("name"), DEFAULT_DBINDEX);
+	@Override
+	public Set<ZNode> getLeftTree() {
+		return getLeftTree(refreshMode);
+	}
+	
+	private Set<ZNode> getLeftTree(RefreshModeEnum refreshMode) {
+		switch(refreshMode) {
+		case manually:
+			break;
+		case auto:
+			for(Map<String, Object> redisServerMap : RedisApplication.redisServerCache) {
+				RedisZtreeUtil.refreshRedisNavigateZtree((String)redisServerMap.get("name"));
+			}
+			break;
 		}
 		return new TreeSet<ZNode>(redisNavigateZtree);
+		
 	}
 	
 	@Override
@@ -69,7 +78,7 @@ public class ViewServiceImpl extends RedisApplication implements ViewService, Co
 
 	private Set<ZNode> refreshServerTree(String serverName,
 			int dbIndex) {
-		 RedisZtreeUtil.refreshRedisNavigateZtree(serverName, dbIndex) ;
+		 RedisZtreeUtil.refreshRedisNavigateZtree(serverName) ;
 		 return new TreeSet<ZNode>(redisNavigateZtree);
 	}
 

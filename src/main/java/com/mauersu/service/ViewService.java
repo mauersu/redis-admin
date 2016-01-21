@@ -14,4 +14,6 @@ public interface ViewService {
 
 	Set<ZNode> refresh();
 
+	void changeRefreshMode(String mode);
+
 }

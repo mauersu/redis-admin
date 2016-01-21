@@ -20,7 +20,7 @@ import com.mauersu.util.ztree.RedisZtreeUtil;
 
 public abstract class RedisApplication implements Constant{
 
-	public boolean useVMCache = true;
+	public static volatile RefreshModeEnum refreshMode = RefreshModeEnum.manually;
 	public static String BASE_PATH = "/redis-admin";
 	protected RedisTemplateFactory redisTemplateFactory;
 	

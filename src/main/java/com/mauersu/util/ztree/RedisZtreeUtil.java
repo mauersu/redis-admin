@@ -12,7 +12,7 @@ public class RedisZtreeUtil implements Constant{
 		initRedisNavigateZtree(serverName, DEFAULT_DBINDEX);
 	}
 
-	public static ZNode initRedisNavigateZtree(String serverName, int dbIndex) {
+	private static ZNode initRedisNavigateZtree(String serverName, int dbIndex) {
 		ZNode serverZnode = null;
 		serverZnode = ZNode.makeZNode(serverName, new RedisAttach(serverName));
 		int serverZnodeIndex = redisNavigateZtree.indexOf(serverZnode);
@@ -27,7 +27,11 @@ public class RedisZtreeUtil implements Constant{
 		return serverZnode;
 	}
 	
-	public static ZNode refreshRedisNavigateZtree(String serverName, int dbIndex) {
+	public static void refreshRedisNavigateZtree(String serverName) {
+		refreshRedisNavigateZtree(serverName, DEFAULT_DBINDEX);
+	}
+	
+	private static ZNode refreshRedisNavigateZtree(String serverName, int dbIndex) {
 		ZNode serverZnode = ZNode.makeZNode(serverName, new RedisAttach(serverName));
 		ZNode dbIndexZnode = getRedisNavigateZtree(serverName, 0);
 		serverZnode.resetChildren(dbIndexZnode);

@@ -1,5 +1,6 @@
 package com.mauersu.controller;
 
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import com.mauersu.util.ConvertUtil;
 import com.mauersu.util.QueryEnum;
 import com.mauersu.util.RKey;
 import com.mauersu.util.RedisApplication;
+import com.mauersu.util.ztree.RedisZtreeUtil;
 import com.mauersu.util.ztree.ZNode;
 
 @Controller
@@ -66,7 +68,6 @@ public class RedisController extends RedisApplication implements Constant{
 			@RequestParam String password) {
 		
 		redisService.addRedisServer(name, host, port, password);
-		//viewService.refresh();
 		
 		return WorkcenterResponseBodyJson.custom().build();
 	}
@@ -89,9 +90,31 @@ public class RedisController extends RedisApplication implements Constant{
 		return WorkcenterResponseBodyJson.custom().build();
 	}
 	
+	private void refreshByMode() {
+		switch(refreshMode) {
+		case manually:
+			break;
+		case auto:
+			viewService.refresh();
+			break;
+		}
+	}
+	
+	@RequestMapping(value="/refreshMode", method=RequestMethod.POST)
+	@ResponseBody
+	public Object refreshMode(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String mode) {
+		
+		viewService.changeRefreshMode(mode);
+		
+		return WorkcenterResponseBodyJson.custom().build();
+	}
+	
 	@RequestMapping(value="/stringList/{serverName}/{dbIndex}", method=RequestMethod.GET)
 	public Object stringList(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable String serverName, @PathVariable String dbIndex) {
+		
+		refreshByMode();
 		
 		String queryKey = StringUtil.getParameterByDefault(request, "queryKey", MIDDLE_KEY);
 		String queryKey_ch = QueryEnum.valueOf(queryKey).getQueryKeyCh();
@@ -108,6 +131,7 @@ public class RedisController extends RedisApplication implements Constant{
 		request.setAttribute("serverName", serverName);
 		request.setAttribute("dbIndex", dbIndex);
 		request.setAttribute("redisKeys", redisKeys);
+		request.setAttribute("refreshMode", refreshMode.getLabel());
 		request.setAttribute("viewPage", "redis/list.jsp");
 		return "admin/main";
 	}

@@ -40,12 +40,13 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 
-					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">realTime<span class="caret"></span></a>
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${refreshMode }<span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="javascript:void(0);">realTime</a></li>
-							<li><a href="javascript:void(0);">updateByYou</a></li>
+							<li><a class="refresh_a" href="javascript:void(0);" value1="auto">Auto refresh</a></li>
+							<li><a class="refresh_a" href="javascript:void(0);" value1="manually">Manually refresh</a></li>
 							<!-- <li role="separator" class="divider"></li> -->
-						</ul></li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -68,7 +69,21 @@
 	</div>
 	<script>
 		$(document).ready(function() {
-			
+			$(".refresh_a").on("click", function() {
+				var value1 = $(this).attr("value1");
+				var url = "<%=basePath%>/redis/refreshMode";
+				$.ajax({
+					type: "post",
+					url: url,
+					dataType: "json",
+					data: {
+						mode: value1,
+					},
+					success: function(data) {
+						modelAlert(data);
+					}
+				})
+			});
 		})
 	</script>
 </body>
