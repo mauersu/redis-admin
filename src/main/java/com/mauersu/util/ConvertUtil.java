@@ -21,13 +21,13 @@ public class ConvertUtil {
 		}
 	}
 	
-	public static Double[] convert2Double(String[] strings) {
+	public static double[] convert2Double(String[] strings) {
 		if(strings==null) return null;
-		List<Double> doubleList = new ArrayList<Double>();
-		for(String str: strings) {
-			Double d = Double.parseDouble(str);
-			doubleList.add(d);
+		double[] doubleList = new double[strings.length];
+		for(int i=0;i<strings.length;i++) {
+			double d = Double.parseDouble(strings[i]);
+			doubleList[i] = d;
 		}
-		return (Double[]) doubleList.toArray();
+		return doubleList;
 	}
 }

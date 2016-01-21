@@ -60,41 +60,87 @@
 						<thead>
 							<tr>
 								<th>value</th>
+								<th class="col-sm-1 col-lg-1">operation</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr style="display: none;">
-								<td title="value"><input name="value" class="form-control" ></td>
+								<td title="value">
+									<div class="input-group">
+										<span class="input-group-addon">value</span>
+										<input name="value" type="text" class="requireds form-control" placeholder="value"  > 
+										<span class="input-group-btn">
+											<button class="update_minus_btn btn btn-default" type="button" value1="STRING">
+												<span class="glyphicon glyphicon-minus" />
+											</button>
+										</span>
+									</div>
+								<!-- <input name="value" class="form-control" > -->
+								</td>
+								<td><button type="button" class="update_redis_btn btn btn-primary">update</button></td>
 							</tr>
 						</tbody>
 					</table>
 				</form>
 				
 				<form id="LISTForm" style="display: none;">
+					<label for="recipient-name" class="control-label">value(REMARK:leftpop , leftpush)</label> 
 					<table id="LISTFormTable" class="table table-striped table-bordered" >
 						<thead>
 							<tr>
 								<th>value</th>
+								<th class="col-sm-1 col-lg-1">operation</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr style="display: none;">
-								<td title="value"><input name="value" class="form-control" ></td>
+								<td title="value">
+									<div class="input-group">
+										<span class="input-group-addon">value</span>
+										<input name="value" type="text" class="requireds form-control" placeholder="value"  > 
+										<span class="input-group-btn">
+											<button class="update_plus_btn btn btn-default" type="button" value1="LIST">
+												<span class="glyphicon glyphicon-plus" />
+											</button>
+											<button class="update_minus_btn btn btn-default" type="button" value1="LIST">
+												<span class="glyphicon glyphicon-minus" />
+											</button>
+										</span>
+									</div>
+								<!-- <input name="value" class="form-control" > -->
+								</td>
+								<td><button type="button" class="update_redis_btn btn btn-primary">lpush</button></td>
 							</tr>
 						</tbody>
 					</table>
 				</form>
 				
 				<form id="SETForm" style="display: none;">
+					<label for="recipient-name" class="control-label">value(REMARK:minus is random)</label> 
 					<table id="SETFormTable" class="table table-striped table-bordered" >
 						<thead>
 							<tr>
 								<th>value</th>
+								<th class="col-sm-1 col-lg-1">operation</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr style="display: none;">
-								<td title="value"><input name="value" class="form-control" ></td>
+								<td title="value">
+									<div class="input-group">
+										<span class="input-group-addon">value</span>
+										<input name="value" type="text" class="requireds form-control" placeholder="value"  > 
+										<span class="input-group-btn">
+											<button class="update_plus_btn btn btn-default" type="button" value1="SET">
+												<span class="glyphicon glyphicon-plus" />
+											</button>
+											<button class="update_minus_btn btn btn-default" type="button" value1="SET">
+												<span class="glyphicon glyphicon-minus" />
+											</button>
+										</span>
+									</div>
+								</td>
+								<td><button type="button" class="update_redis_btn btn btn-primary">update</button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -104,14 +150,30 @@
 					<table id="ZSETFormTable" class="table table-striped table-bordered" >
 						<thead>
 							<tr>
-								<th>score</th>
+								<th class="col-sm-5 col-lg-5">score</th>
 								<th>member</th>
+								<th class="col-sm-1 col-lg-1">operation</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr style="display: none;">
 								<td title="score"><input name="score" class="form-control" ></td>
-								<td title="member"><input name="member" class="form-control" ></td>
+								<td title="value">
+									<div class="input-group">
+										<span class="input-group-addon">value</span>
+										<input name="value" type="text" class="requireds form-control" placeholder="value" readonly> 
+										<span class="input-group-btn">
+											<button class="update_plus_btn btn btn-default" type="button" value1="ZSET">
+												<span class="glyphicon glyphicon-plus" />
+											</button>
+											<button class="update_minus_btn btn btn-default" type="button" value1="ZSET">
+												<span class="glyphicon glyphicon-minus" />
+											</button>
+										</span>
+									</div>
+								<!-- <input name="member" class="form-control" > -->
+								</td>
+								<td><button type="button" class="update_redis_btn btn btn-primary">update</button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -121,14 +183,30 @@
 					<table id="HASHFormTable" class="table table-striped table-bordered" >
 						<thead>
 							<tr>
-								<th>field</th>
+								<th class="col-sm-5 col-lg-5">field</th>
 								<th>value</th>
+								<th class="col-sm-1 col-lg-1">operation</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr style="display: none;">
-								<td title="field"><input name="field" class="form-control"></td>
-								<td title="value"><input name="value" class="form-control"></td>
+								<td title="field"><input name="field" class="form-control" placeholder="field" readonly></td>
+								<td title="value">
+									<div class="input-group">
+										<span class="input-group-addon">value</span>
+										<input name="value" type="text" class="requireds form-control" placeholder="value"  > 
+										<span class="input-group-btn">
+											<button class="update_plus_btn btn btn-default" type="button" value1="HASH">
+												<span class="glyphicon glyphicon-plus" />
+											</button>
+											<button class="update_minus_btn btn btn-default" type="button" value1="HASH">
+												<span class="glyphicon glyphicon-minus" />
+											</button>
+										</span>
+									</div>
+								<!-- <input name="value" class="form-control"> -->
+								</td>
+								<td><button type="button" class="update_redis_btn btn btn-primary">update</button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -138,7 +216,6 @@
 			
 			<div class="modal-footer">
 				<button type="button" class="close_btn btn btn-default" data-dismiss="modal">close</button>
-				<button type="button" class="update_btn btn btn-primary">update</button>
 			</div>
 		</div>
 	</div>

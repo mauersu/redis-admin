@@ -4,7 +4,7 @@
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!-- dialog -->
-<div class="modal fade" id="myModal">
+<div class="modal modal1 fade" id="myModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">

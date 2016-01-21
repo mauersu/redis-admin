@@ -13,6 +13,7 @@ import com.mauersu.util.RedisApplication;
 
 @Service
 public class RedisServiceImpl extends RedisApplication implements RedisService, WebConstant  {
+	
 	@Autowired
 	private RedisDao redisDao;
 	
@@ -24,7 +25,7 @@ public class RedisServiceImpl extends RedisApplication implements RedisService, 
 	@Override
 	public void addKV(String serverName, int dbIndex, String dataType,
 			String key, 
-			String[] values, Double[] scores, String[] members, String[] fields) {
+			String[] values, double[] scores, String[] members, String[] fields) {
 		
 		switch(dataType) {
 		case "STRING":

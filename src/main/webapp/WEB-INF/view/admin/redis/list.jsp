@@ -76,6 +76,7 @@
 
 <script src="<%=basePath%>/js/admin/redis/dataTypeLineHtml.js"></script>
 <script src="<%=basePath%>/js/admin/redis/addRedisKV.js"></script>
+<script src="<%=basePath%>/js/admin/redis/updateRedisKV.js"></script>
 
 <script>
 	var serverName = '${serverName}';
@@ -104,93 +105,6 @@
 		});
 		
 		
-		$(".edit_btn").on("click", function() {
-			
-			var checkedNum = $("#listTable").find("input:checkbox[name='redisKey']:checked").length;
-			if(checkedNum > 1||checkedNum<=0) {
-				$("#model_title").text("warning");
-				$("#model_content").text("please choose one to edit");
-				$('#myModal').modal();
-				return ;
-			}
-			
-			var key = $("#listTable").find("input:checkbox[name='redisKey']:checked").attr("value1");
-			var dataType = $("#listTable").find("input:checkbox[name='redisKey']:checked").attr("value2");
-			
-			$("#updateModal_serverName").val(serverName);
-			$("#updateModal_dbIndex").val(dbIndex);
-			$("#updateModal_key").val(key);
-			$("#updateModal_dataType").val(dataType);
-			
-			$.ajax({
-				type: "get",
-				url: '<%=basePath%>/redis/KV',
-				dataType: "json",
-				data: {
-					serverName: serverName,
-					dbIndex: dbIndex,
-					key: key,
-					dataType: dataType,
-				},
-				success : function(data) {
-					$('#'+ dataType + 'FormTable').tableData(data.data); 
-					$("#updateModal").modal('show');
-				}
-			});
-		});
-		
-		$(".redisKey").on("dblclick", function() {
-			
-			var key = $(this).find("input:checkbox[name='redisKey']").attr("value1");
-			var dataType = $(this).find("input:checkbox[name='redisKey']").attr("value2");
-			
-			$("#updateModal_serverName").val(serverName);
-			$("#updateModal_dbIndex").val(dbIndex);
-			$("#updateModal_key").val(key);
-			$("#updateModal_dataType").val(dataType);
-			
-			$.ajax({
-				type: "get",
-				url: '<%=basePath%>/redis/KV',
-				dataType: "json",
-				data: {
-					serverName: serverName,
-					dbIndex: dbIndex,
-					key: key,
-					dataType: dataType,
-				},
-				success : function(data) {
-					$('#'+ dataType + 'FormTable').tableData(data.data); 
-					$("#updateModal").modal('show');
-				}
-			});
-		});
-		
-		$(".update_btn").on("click", function() {
-			
-			var serverName = $("#updateModal_serverName").val();
-			var dbIndex = $("#updateModal_dbIndex").val();
-			var key = $("#updateModal_key").val();
-			var dataType = $("#updateModal_dataType").val();
-			
-			var updateForm = $("#" + dataType + "Form");
-			alert($(updateForm).attr("value1"));
-			var updateFormParam = $(updateForm).formSerialize();
-			updateFormParam = updateFormParam.substring(updateFormParam.indexOf("&")+1);
-			var url = basePath + '/redis/KV';
-			$.ajax({
-				type: "post",
-				url: url,
-				dataType: "json",
-				data: updateFormParam + "&serverName=" + serverName
-				+ "&dbIndex=" + dbIndex+ "&key=" + key
-				+ "&dataType=" + dataType,
-				success: function(data) {
-					modelAlert(data);
-				}
-			});
-		});
-
 		$(".delete_btn").on("click", function() {
 			var operator = $(this).attr("value1");
 			var url = "<%=basePath%>/redis/delKV";

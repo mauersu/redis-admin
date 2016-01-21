@@ -144,7 +144,7 @@ public class RedisController extends RedisApplication implements Constant{
 			@RequestParam String key) {
 		
 		String[] value = request.getParameterValues("value");
-		Double[] score = ConvertUtil.convert2Double(request.getParameterValues("score"));
+		double[] score = ConvertUtil.convert2Double(request.getParameterValues("score"));
 		String[] member = request.getParameterValues("member");
 		String[] field = request.getParameterValues("field");
 		

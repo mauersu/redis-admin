@@ -68,7 +68,7 @@ public class RValue {
 		return rValues;
 	}
 	public static Object creatZSetValue(Set<TypedTuple<Object>> values) {
-		Set<RValue> rValues = new HashSet<RValue>();
+		List<RValue> rValues = new ArrayList<RValue>();
 		for(TypedTuple<Object> v:values) {
 			rValues.add(new RValue(v.getScore(), v.getValue()));
 		}
