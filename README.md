@@ -23,7 +23,7 @@ This is a redis client web tool written based on Java EE and Jedis. It's my obje
  	* Support multiple language, now support English and Chinese
 
 
-## redis-admin Quick start
+##  Quick Start
 
 `first step`:Edit file:'redis.properties' :
 first of all, set up redis.server.num, this is redis.properties example:
