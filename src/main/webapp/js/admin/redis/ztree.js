@@ -15,7 +15,7 @@ $(document).ready(function() {
 			dataType: "json",
 			data: formParam,
 			success : function(data) {
-				window.location.href = basePath + '/redis/stringList/default/0';
+				window.location.href = basePath + '/redis/stringList/' + serverName + '/' + dbIndex;
 			}
 		})
 	})

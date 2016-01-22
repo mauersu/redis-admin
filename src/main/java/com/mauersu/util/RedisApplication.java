@@ -25,7 +25,7 @@ public abstract class RedisApplication implements Constant{
 	protected RedisTemplateFactory redisTemplateFactory;
 	
 	protected volatile Semaphore limitUpdate = new Semaphore(1);
-	protected static final int LIMIT_TIME = 1; //unit : second
+	protected static final int LIMIT_TIME = 3; //unit : second
 	
 	protected static ThreadLocal<RedisConnection> 	redisConnectionThreadLocal = new ThreadLocal<RedisConnection>() {
 		@Override
