@@ -22,7 +22,6 @@ public abstract class RedisApplication implements Constant{
 
 	public static volatile RefreshModeEnum refreshMode = RefreshModeEnum.manually;
 	public static String BASE_PATH = "/redis-admin";
-	protected RedisTemplateFactory redisTemplateFactory;
 	
 	protected volatile Semaphore limitUpdate = new Semaphore(1);
 	protected static final int LIMIT_TIME = 3; //unit : second
@@ -78,10 +77,10 @@ public abstract class RedisApplication implements Constant{
 		}).start();
 	}
 	
-	protected RedisConnection getRedisConnection(String redisName, int dbIndex) {
+	protected RedisConnection getThreadLocalRedisConnection(String redisName, int dbIndex) {
 		RedisConnection redisConnection = redisConnectionThreadLocal.get();
 		if(redisConnection==null) {
-			redisConnection = redisTemplateFactory.getRedisConnection(redisName, dbIndex);
+			redisConnection = RedisTemplateFactory.getRedisConnection(redisName, dbIndex);
 			redisConnectionThreadLocal.set(redisConnection);
 		}
 		return redisConnection;
@@ -114,20 +113,27 @@ public abstract class RedisApplication implements Constant{
 		redisServerMap.put("password", password);
 		RedisApplication.redisServerCache.add(redisServerMap);
 		
-		initRedisKeysCache(redisTemplate, name, 0);
+		initRedisKeysCache(redisTemplate, name);
 		
 		RedisZtreeUtil.initRedisNavigateZtree(name);
 	}
 	
+	private void initRedisKeysCache(RedisTemplate redisTemplate, String name) {
+		for(int i=0;i<=15;i++) {
+			initRedisKeysCache(redisTemplate, name, i);
+		}
+	}
+	
 	protected void initRedisKeysCache(RedisTemplate redisTemplate, String serverName , int dbIndex) {
-		RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
+		RedisConnection connection = getThreadLocalRedisConnection(serverName, dbIndex);
 		connection.select(dbIndex);
 		Set<byte[]> keysSet = connection.keys("*".getBytes());
 		List<RKey> tempList = new ArrayList<RKey>();
 		ConvertUtil.convertByteToString(connection, keysSet, tempList);
 		CopyOnWriteArrayList<RKey> redisKeysList = new CopyOnWriteArrayList<RKey>(tempList);
-		redisKeysListMap.put(serverName+dbIndex, redisKeysList);
-		connection.select(dbIndex);
+		if(redisKeysList.size()>0) {
+			redisKeysListMap.put(serverName+dbIndex, redisKeysList);
+		}
 	}
 	
 	protected static void logCurrentTime(String code) {

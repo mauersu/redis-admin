@@ -5,12 +5,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.mauersu.dao.RedisTemplateFactory;
 import com.mauersu.service.ViewService;
 import com.mauersu.util.Constant;
 import com.mauersu.util.RKey;
@@ -21,11 +19,6 @@ import com.mauersu.util.ztree.ZNode;
 
 @Service
 public class ViewServiceImpl extends RedisApplication implements ViewService, Constant {
-
-	@Autowired
-	public void setRedisTemplateFactory(RedisTemplateFactory redisTemplateFactory) {
-		this.redisTemplateFactory = redisTemplateFactory;
-	}
 
 	@Override
 	public void changeRefreshMode(String mode) {

@@ -10,7 +10,7 @@ import com.mauersu.util.RedisApplication;
 @Service
 public class RedisTemplateFactory extends RedisApplication {
 	
-	protected RedisTemplate<String, Object> getRedisTemplate(String redisName) {
+	protected static RedisTemplate<String, Object> getRedisTemplate(String redisName) {
 		RedisTemplate<String, Object> redisTemplate = redisTemplatesMap.get(redisName);
 		if(redisTemplate==null) {
 			throw new RedisConnectionException("had not connected to " + redisName + " this redis server now.");
@@ -18,14 +18,14 @@ public class RedisTemplateFactory extends RedisApplication {
 		return redisTemplate;
 	}
 	
-	private void validate(int dbIndex) {
+	private static void validate(int dbIndex) {
 		if(0> dbIndex || dbIndex> 15) {
 			throw new RedisConnectionException("redis dbIndex is invalid : " + dbIndex);
 		}
 		return ;
 	}
 	
-	public RedisConnection getRedisConnection(String redisName, int dbIndex) {
+	public static RedisConnection getRedisConnection(String redisName, int dbIndex) {
 		RedisTemplate<String, Object> redisTemplate = getRedisTemplate(redisName);
 		RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
 		validate(dbIndex);
@@ -33,7 +33,7 @@ public class RedisTemplateFactory extends RedisApplication {
 		return connection;
 	}
 	
-	public RedisConnection getRedisConnection(String redisName) {
+	public static RedisConnection getRedisConnection(String redisName) {
 		RedisTemplate<String, Object> redisTemplate = getRedisTemplate(redisName);
 		RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
 		return connection;
