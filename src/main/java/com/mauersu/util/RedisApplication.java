@@ -47,12 +47,19 @@ public abstract class RedisApplication implements Constant{
 	}
 	
 	protected void finishUpdate() {
-		try {
-			Thread.sleep(LIMIT_TIME * 1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		updatePermition.get().release(1);
+		final Semaphore semaphore = updatePermition.get();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(LIMIT_TIME * 1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				semaphore.release(1);
+				logCurrentTime("semaphore.release(1) finish");
+			}
+		}).start();
 	}
 	
 	protected void runUpdateLimit() {
@@ -121,5 +128,12 @@ public abstract class RedisApplication implements Constant{
 		CopyOnWriteArrayList<RKey> redisKeysList = new CopyOnWriteArrayList<RKey>(tempList);
 		redisKeysListMap.put(serverName+dbIndex, redisKeysList);
 		connection.select(dbIndex);
+	}
+	
+	protected static void logCurrentTime(String code) {
+		if(debug) {
+			System.out.println("       code:"+code+"        当前时间:" + System.currentTimeMillis());
+		}
+		
 	}
 }

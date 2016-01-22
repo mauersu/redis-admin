@@ -57,11 +57,16 @@ public class ViewServiceImpl extends RedisApplication implements ViewService, Co
 		Set<ZNode> zTree = null;
 		if(permit) {
 			try {
+				logCurrentTime("try {");
 				for(Map<String, Object> redisServerMap : RedisApplication.redisServerCache) {
+					logCurrentTime("refreshKeys(" + (String)redisServerMap.get("name"));
 					refreshKeys((String)redisServerMap.get("name"), DEFAULT_DBINDEX);
+					logCurrentTime("refreshServerTree(" + (String)redisServerMap.get("name"));
 					zTree = refreshServerTree((String)redisServerMap.get("name"), DEFAULT_DBINDEX);
 					// test limit flow System.out.println("yes permit");
+					logCurrentTime("continue");
 				}
+				logCurrentTime("finally {");
 			} finally {
 				finishUpdate();
 			}
@@ -86,7 +91,9 @@ public class ViewServiceImpl extends RedisApplication implements ViewService, Co
 	public Set<RKey> getRedisKeys(String serverName, String dbIndex, String[] keyPrefixs, String queryKey, String queryValue) {
 		List<RKey> allRedisKeys = redisKeysListMap.get(serverName + dbIndex);
 		if(keyPrefixs == null || keyPrefixs.length == 0) {
-			if(StringUtils.isEmpty(queryKey) && StringUtils.isEmpty(queryValue)) {
+			logCurrentTime("keyPrefixs == null");
+			if(StringUtils.isEmpty(queryValue)) {
+				logCurrentTime("new TreeSet<RKey>(allRedisKeys);");
 				return new TreeSet<RKey>(allRedisKeys);
 			}
 			Set<RKey> queryRedisKeys = getQueryRedisKeys(allRedisKeys, queryKey, queryValue);

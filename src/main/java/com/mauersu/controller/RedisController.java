@@ -84,9 +84,9 @@ public class RedisController extends RedisApplication implements Constant{
 	@RequestMapping(value="/refresh", method=RequestMethod.GET)
 	@ResponseBody
 	public Object refresh(HttpServletRequest request, HttpServletResponse response) {
-		
+		logCurrentTime("viewService.refresh(); start");
 		viewService.refresh();
-		
+		logCurrentTime("viewService.refresh(); end");
 		return WorkcenterResponseBodyJson.custom().build();
 	}
 	
@@ -121,8 +121,9 @@ public class RedisController extends RedisApplication implements Constant{
 		String queryValue = StringUtil.getParameterByDefault(request, "queryValue", EMPTY_STRING);
 		
 		String[] keyPrefixs = request.getParameterValues("keyPrefixs");
+		logCurrentTime("viewService.getRedisKeys start");
 		Set<RKey> redisKeys = viewService.getRedisKeys(serverName, dbIndex, keyPrefixs, queryKey, queryValue);
-		
+		logCurrentTime("viewService.getRedisKeys end");
 		request.setAttribute("redisServers", redisServerCache);
 		request.setAttribute("basePath", BASE_PATH);
 		request.setAttribute("queryLabel_ch", queryKey_ch);

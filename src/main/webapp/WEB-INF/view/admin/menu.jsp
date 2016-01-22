@@ -7,7 +7,7 @@
 <div class="col-sm-1 col-md-1 sidebar">
 
 	<ul class="nav nav-sidebar">
-		<li><a id="menu_a" href="">Redis</a></li>
+		<li><a id="menu_a" href="javascript:void(0);">Redis</a></li>
 	</ul>
 	
 	
@@ -15,7 +15,9 @@
 
 <script>
 	$(document).ready(function() {
-		$("#menu_a").attr("href", basePath + "/redis/stringList/" + "${serverName}" + "/" + "${dbIndex}");
+		$("#menu_a").on("click", function() {
+			window.location.href = '<%=basePath%>' + '/redis/stringList/' + "${serverName}" + '/' + "${dbIndex}";
+		});
 	})
 
 </script>
