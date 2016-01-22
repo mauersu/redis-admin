@@ -32,11 +32,11 @@ first of all, set up redis.server.num, this is redis.properties example:
 
 ```
 redis.server.num=1
-redis.language=Chinese
+redis.language=English
 
-#must set a default-name redis
+#must set a default redis
 redis.host.1=10.100.142.9
-redis.name.1=default
+redis.name.1=10.100.142.9
 redis.port.1=6379
 redis.password.1=SH89qwIO
 

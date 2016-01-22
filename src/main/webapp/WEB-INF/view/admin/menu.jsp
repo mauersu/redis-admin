@@ -15,7 +15,7 @@
 
 <script>
 	$(document).ready(function() {
-		$("#menu_a").attr("href", "<%=basePath%>/redis/stringList/" + "${serverName}" + "/" + "${dbIndex}");
+		$("#menu_a").attr("href", basePath + "/redis/stringList/" + "${serverName}" + "/" + "${dbIndex}");
 	})
 
 </script>
