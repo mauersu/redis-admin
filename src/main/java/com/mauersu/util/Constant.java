@@ -21,7 +21,8 @@ public interface Constant {
 	public static final CopyOnWriteArrayList<Map<String, Object>>	redisServerCache 		=   new CopyOnWriteArrayList<Map<String, Object>>();
 
 	public static final String DEFAULT_REDISKEY_SEPARATOR		 							= ":";
-	
+	public static final int REDIS_DEFAULT_DB_SIZE 											= 15;
+	public static final String DEFAULT_SEPARATOR											= "_";
 	public static final String UTF_8 														= "utf-8";
 	
 	/** redis properties key **/

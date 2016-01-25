@@ -26,9 +26,9 @@ public abstract class RedisApplication implements Constant{
 	protected volatile Semaphore limitUpdate = new Semaphore(1);
 	protected static final int LIMIT_TIME = 3; //unit : second
 	
-	protected static ThreadLocal<RedisConnection> 	redisConnectionThreadLocal = new ThreadLocal<RedisConnection>() {
+	protected static ThreadLocal<RedisConnectionHolder> 	redisConnectionThreadLocal = new ThreadLocal<RedisConnectionHolder>() {
 		@Override
-		protected RedisConnection initialValue() {
+		protected RedisConnectionHolder initialValue() {
 			return null;
 		};
 	};
@@ -77,22 +77,26 @@ public abstract class RedisApplication implements Constant{
 		}).start();
 	}
 	
+	// connection pool will cause deadlock , mast one thread one connection by RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory())
+	// see :RedisTemplateFactory.getRedisConnection(redisName, dbIndex);
 	protected RedisConnection getThreadLocalRedisConnection(String redisName, int dbIndex) {
-		RedisConnection redisConnection = redisConnectionThreadLocal.get();
-		if(redisConnection==null) {
-			redisConnection = RedisTemplateFactory.getRedisConnection(redisName, dbIndex);
-			redisConnectionThreadLocal.set(redisConnection);
+		RedisConnectionHolder redisConnectionHolder = redisConnectionThreadLocal.get();
+		if(redisConnectionHolder==null||!redisName.equals(redisConnectionHolder.getServerName())) {
+			RedisConnection redisConnection = RedisTemplateFactory.getRedisConnection(redisName, dbIndex);
+			RedisConnectionHolder newRedisConnectionHolder = new RedisConnectionHolder(redisName, redisConnection);
+			redisConnectionThreadLocal.set(newRedisConnectionHolder);
+			return newRedisConnectionHolder.getRedisConnection();
 		}
-		return redisConnection;
+		return redisConnectionHolder.getRedisConnection();
 	}
 	
-	protected RedisConnection getRedisConnection() {
+	/*private RedisConnection getRedisConnection() {
 		RedisConnection redisConnection = redisConnectionThreadLocal.get();
 		if(redisConnection==null) {
-			throw new RedisConnectionException("redisConnectionThreadLocal is null");
+			throw new RedisConnectionException("redisConnectionThreadLocal is not init");
 		}
 		return redisConnection;
-	}
+	}*/
 	
 	protected void createRedisConnection(String name, String host, int port, String password) {
 		JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
@@ -119,10 +123,11 @@ public abstract class RedisApplication implements Constant{
 	}
 	
 	private void initRedisKeysCache(RedisTemplate redisTemplate, String name) {
-		for(int i=0;i<=15;i++) {
+		for(int i=0;i<=REDIS_DEFAULT_DB_SIZE;i++) {
 			initRedisKeysCache(redisTemplate, name, i);
 		}
 	}
+	
 	
 	protected void initRedisKeysCache(RedisTemplate redisTemplate, String serverName , int dbIndex) {
 		RedisConnection connection = getThreadLocalRedisConnection(serverName, dbIndex);
@@ -132,7 +137,7 @@ public abstract class RedisApplication implements Constant{
 		ConvertUtil.convertByteToString(connection, keysSet, tempList);
 		CopyOnWriteArrayList<RKey> redisKeysList = new CopyOnWriteArrayList<RKey>(tempList);
 		if(redisKeysList.size()>0) {
-			redisKeysListMap.put(serverName+dbIndex, redisKeysList);
+			redisKeysListMap.put(serverName+DEFAULT_SEPARATOR+dbIndex, redisKeysList);
 		}
 	}
 	
@@ -140,6 +145,5 @@ public abstract class RedisApplication implements Constant{
 		if(debug) {
 			System.out.println("       code:"+code+"        当前时间:" + System.currentTimeMillis());
 		}
-		
 	}
 }

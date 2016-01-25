@@ -82,7 +82,9 @@ public class ViewServiceImpl extends RedisApplication implements ViewService, Co
 
 	@Override
 	public Set<RKey> getRedisKeys(String serverName, String dbIndex, String[] keyPrefixs, String queryKey, String queryValue) {
-		List<RKey> allRedisKeys = redisKeysListMap.get(serverName + dbIndex);
+		List<RKey> allRedisKeys = redisKeysListMap.get(serverName + DEFAULT_SEPARATOR + dbIndex);
+		if(allRedisKeys == null || allRedisKeys.size()==0) 
+			return new TreeSet<RKey>();
 		if(keyPrefixs == null || keyPrefixs.length == 0) {
 			logCurrentTime("keyPrefixs == null");
 			if(StringUtils.isEmpty(queryValue)) {

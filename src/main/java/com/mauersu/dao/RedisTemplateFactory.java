@@ -1,6 +1,7 @@
 package com.mauersu.dao;
 
 import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +26,13 @@ public class RedisTemplateFactory extends RedisApplication {
 		return ;
 	}
 	
+	// connection pool will cause deadlock , mast one thread one connection by RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory())
 	public static RedisConnection getRedisConnection(String redisName, int dbIndex) {
 		RedisTemplate<String, Object> redisTemplate = getRedisTemplate(redisName);
-		RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
+		//RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
+		RedisConnection connection = RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory());
 		validate(dbIndex);
 		connection.select(dbIndex);
-		return connection;
-	}
-	
-	public static RedisConnection getRedisConnection(String redisName) {
-		RedisTemplate<String, Object> redisTemplate = getRedisTemplate(redisName);
-		RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
 		return connection;
 	}
 	

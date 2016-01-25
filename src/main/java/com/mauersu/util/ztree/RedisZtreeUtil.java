@@ -9,7 +9,10 @@ import com.mauersu.util.RKey;
 public class RedisZtreeUtil implements Constant{
 
 	public static void initRedisNavigateZtree(String serverName) {
-		initRedisNavigateZtree(serverName, DEFAULT_DBINDEX);
+		for(int i=0;i<=REDIS_DEFAULT_DB_SIZE;i++) {
+			initRedisNavigateZtree(serverName, i);
+		}
+		
 	}
 
 	private static ZNode initRedisNavigateZtree(String serverName, int dbIndex) {
@@ -22,7 +25,7 @@ public class RedisZtreeUtil implements Constant{
 			serverZnode = redisNavigateZtree.get(serverZnodeIndex);
 		}
 		
-		ZNode dbIndexZnode = getRedisNavigateZtree(serverName, 0);
+		ZNode dbIndexZnode = getRedisNavigateZtree(serverName, dbIndex);
 		serverZnode.addChildren(dbIndexZnode);
 		return serverZnode;
 	}
@@ -45,7 +48,10 @@ public class RedisZtreeUtil implements Constant{
 		
 	protected static ZNode getRedisNavigateZtree(String serverName, int dbIndex) {
 		ZNode dbIndexZnode = ZNode.makeZNode(dbIndex+"", new RedisAttach(serverName, dbIndex));
-		CopyOnWriteArrayList<RKey> redisKeysList = redisKeysListMap.get(serverName+dbIndex);
+		CopyOnWriteArrayList<RKey> redisKeysList = redisKeysListMap.get(serverName+DEFAULT_SEPARATOR+dbIndex);
+		if(redisKeysList==null||redisKeysList.size()==0) {
+			return dbIndexZnode;
+		}
 		for(RKey rkey: redisKeysList) {
 			if(rkey.contains(DEFAULT_REDISKEY_SEPARATOR)) {
 				String[] prefixs = rkey.split(DEFAULT_REDISKEY_SEPARATOR);
