@@ -50,7 +50,7 @@ public class RedisZtreeUtil implements Constant{
 		ZNode dbIndexZnode = ZNode.makeZNode(dbIndex+"", new RedisAttach(serverName, dbIndex));
 		CopyOnWriteArrayList<RKey> redisKeysList = redisKeysListMap.get(serverName+DEFAULT_SEPARATOR+dbIndex);
 		if(redisKeysList==null||redisKeysList.size()==0) {
-			return dbIndexZnode;
+			return null;
 		}
 		for(RKey rkey: redisKeysList) {
 			if(rkey.contains(DEFAULT_REDISKEY_SEPARATOR)) {

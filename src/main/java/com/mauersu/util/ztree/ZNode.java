@@ -49,6 +49,9 @@ public class ZNode extends ZLeaf{
 		if(children==null) {
 			children = new TreeSet<ZLeaf>();
 		}
+		if(zLeaf == null) {
+			return ;
+		}
 		children.add(zLeaf);
 	}
 
