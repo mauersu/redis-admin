@@ -60,7 +60,7 @@ run maven command : mvn clean package
 you will found war in 'target/redis-admin.war'
 move war to ../tomcat/wabapps and start tomcat 
 
-`last step`: Visit redis-admin
+`last step`: visit redis-admin
 
 open brower and visit: http://IP:[port]/redis-admin/redis
 enter username:{manager.username} and password:{manager.password}
