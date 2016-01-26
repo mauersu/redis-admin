@@ -56,9 +56,13 @@ public class ZNode extends ZLeaf{
 	}
 
 	//remove children and set new children
-	public void resetChildren(ZNode dbIndexZnode) {
+	/*public void resetChildren(ZNode dbIndexZnode) {
 		children = new TreeSet<ZLeaf>();
 		children.add(dbIndexZnode);
+	}*/
+	
+	public void resetChildren() {
+		children = new TreeSet<ZLeaf>();
 	}
 	
 }

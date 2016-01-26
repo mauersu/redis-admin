@@ -31,20 +31,21 @@ public class RedisZtreeUtil implements Constant{
 	}
 	
 	public static void refreshRedisNavigateZtree(String serverName) {
-		for(int i=0;i<=REDIS_DEFAULT_DB_SIZE;i++) {
-			refreshRedisNavigateZtree(serverName, i);
-		}
-	}
-	
-	private static ZNode refreshRedisNavigateZtree(String serverName, int dbIndex) {
 		ZNode serverZnode = ZNode.makeZNode(serverName, new RedisAttach(serverName));
-		ZNode dbIndexZnode = getRedisNavigateZtree(serverName, 0);
-		serverZnode.resetChildren(dbIndexZnode);
+		serverZnode.resetChildren();
 		int serverZnodeIndex = redisNavigateZtree.indexOf(serverZnode);
 		if(serverZnodeIndex>=0) {
 			redisNavigateZtree.remove(serverZnodeIndex);
 		}
 		redisNavigateZtree.add(serverZnode);
+		for(int i=0;i<=REDIS_DEFAULT_DB_SIZE;i++) {
+			refreshRedisNavigateZtree(serverZnode, serverName, i);
+		}
+	}
+	
+	private static ZNode refreshRedisNavigateZtree(ZNode serverZnode, String serverName, int dbIndex) {
+		ZNode dbIndexZnode = getRedisNavigateZtree(serverName, dbIndex);
+		serverZnode.addChildren(dbIndexZnode);
 		return serverZnode;
 	}
 		
