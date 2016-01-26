@@ -10,12 +10,12 @@ import java.util.concurrent.Semaphore;
 
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.StringUtils;
 
 import com.mauersu.dao.RedisTemplateFactory;
-import com.mauersu.exception.RedisConnectionException;
+import com.mauersu.util.redis.MyStringRedisTemplate;
 import com.mauersu.util.ztree.RedisZtreeUtil;
 
 public abstract class RedisApplication implements Constant{
@@ -26,12 +26,19 @@ public abstract class RedisApplication implements Constant{
 	protected volatile Semaphore limitUpdate = new Semaphore(1);
 	protected static final int LIMIT_TIME = 3; //unit : second
 	
-	protected static ThreadLocal<RedisConnectionHolder> 	redisConnectionThreadLocal = new ThreadLocal<RedisConnectionHolder>() {
+	public static ThreadLocal<Integer> redisConnectionDbIndex = new ThreadLocal<Integer>() {
+		@Override
+		protected Integer initialValue() {
+			return 0;
+		};
+	};
+	
+	/*private static ThreadLocal<RedisConnectionHolder> 	redisConnectionThreadLocal = new ThreadLocal<RedisConnectionHolder>() {
 		@Override
 		protected RedisConnectionHolder initialValue() {
 			return null;
 		};
-	};
+	};*/
 	protected static ThreadLocal<Semaphore> updatePermition = new ThreadLocal<Semaphore>() {
 		@Override
 		protected Semaphore initialValue() {
@@ -79,7 +86,7 @@ public abstract class RedisApplication implements Constant{
 	
 	// connection pool will cause deadlock , mast one thread one connection by RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory())
 	// see :RedisTemplateFactory.getRedisConnection(redisName, dbIndex);
-	protected RedisConnection getThreadLocalRedisConnection(String redisName, int dbIndex) {
+	/*private RedisConnection getThreadLocalRedisConnection(String redisName, int dbIndex) {
 		RedisConnectionHolder redisConnectionHolder = redisConnectionThreadLocal.get();
 		if(redisConnectionHolder==null||!redisName.equals(redisConnectionHolder.getServerName())) {
 			RedisConnection redisConnection = RedisTemplateFactory.getRedisConnection(redisName, dbIndex);
@@ -88,7 +95,7 @@ public abstract class RedisApplication implements Constant{
 			return newRedisConnectionHolder.getRedisConnection();
 		}
 		return redisConnectionHolder.getRedisConnection();
-	}
+	}*/
 	
 	/*private RedisConnection getRedisConnection() {
 		RedisConnection redisConnection = redisConnectionThreadLocal.get();
@@ -105,7 +112,7 @@ public abstract class RedisApplication implements Constant{
 		if(!StringUtils.isEmpty(password))
 			connectionFactory.setPassword(password);
 		connectionFactory.afterPropertiesSet();
-		RedisTemplate redisTemplate = new StringRedisTemplate();
+		RedisTemplate redisTemplate = new MyStringRedisTemplate();
 		redisTemplate.setConnectionFactory(connectionFactory);
 		redisTemplate.afterPropertiesSet();
 		RedisApplication.redisTemplatesMap.put(name, redisTemplate);
@@ -130,9 +137,10 @@ public abstract class RedisApplication implements Constant{
 	
 	
 	protected void initRedisKeysCache(RedisTemplate redisTemplate, String serverName , int dbIndex) {
-		RedisConnection connection = getThreadLocalRedisConnection(serverName, dbIndex);
+		RedisConnection connection = RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory());
 		connection.select(dbIndex);
 		Set<byte[]> keysSet = connection.keys("*".getBytes());
+		connection.close();
 		List<RKey> tempList = new ArrayList<RKey>();
 		ConvertUtil.convertByteToString(connection, keysSet, tempList);
 		CopyOnWriteArrayList<RKey> redisKeysList = new CopyOnWriteArrayList<RKey>(tempList);

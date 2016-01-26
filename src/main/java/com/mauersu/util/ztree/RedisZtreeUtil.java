@@ -31,7 +31,9 @@ public class RedisZtreeUtil implements Constant{
 	}
 	
 	public static void refreshRedisNavigateZtree(String serverName) {
-		refreshRedisNavigateZtree(serverName, DEFAULT_DBINDEX);
+		for(int i=0;i<=REDIS_DEFAULT_DB_SIZE;i++) {
+			refreshRedisNavigateZtree(serverName, i);
+		}
 	}
 	
 	private static ZNode refreshRedisNavigateZtree(String serverName, int dbIndex) {

@@ -28,7 +28,7 @@ public class CleanContextFilter extends RedisApplication implements Filter  {
 	}
 
 	private void cleanContext() {
-		redisConnectionThreadLocal.set(null);
+		redisConnectionDbIndex.set(0);
 	}
 
 	@Override

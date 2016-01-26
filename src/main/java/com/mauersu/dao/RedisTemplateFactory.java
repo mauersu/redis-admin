@@ -19,6 +19,14 @@ public class RedisTemplateFactory extends RedisApplication {
 		return redisTemplate;
 	}
 	
+	/*protected static void changeRedisDbIndex(String redisName, int dbIndex) {
+		RedisTemplate<String, Object> redisTemplate = getRedisTemplate(redisName);
+		RedisConnection connection = RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory());
+		validate(dbIndex);
+		connection.select(dbIndex);
+		return ;
+	}*/
+	
 	private static void validate(int dbIndex) {
 		if(0> dbIndex || dbIndex> 15) {
 			throw new RedisConnectionException("redis dbIndex is invalid : " + dbIndex);
@@ -27,13 +35,13 @@ public class RedisTemplateFactory extends RedisApplication {
 	}
 	
 	// connection pool will cause deadlock , mast one thread one connection by RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory())
-	public static RedisConnection getRedisConnection(String redisName, int dbIndex) {
+	/*private static RedisConnection getRedisConnection(String redisName, int dbIndex) {
 		RedisTemplate<String, Object> redisTemplate = getRedisTemplate(redisName);
 		//RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
 		RedisConnection connection = RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory());
 		validate(dbIndex);
 		connection.select(dbIndex);
 		return connection;
-	}
+	}*/
 	
 }

@@ -50,16 +50,18 @@ public class ViewServiceImpl extends RedisApplication implements ViewService, Co
 		Set<ZNode> zTree = null;
 		if(permit) {
 			try {
-				logCurrentTime("try {");
+logCurrentTime("try {");
 				for(Map<String, Object> redisServerMap : RedisApplication.redisServerCache) {
-					logCurrentTime("refreshKeys(" + (String)redisServerMap.get("name"));
-					refreshKeys((String)redisServerMap.get("name"), DEFAULT_DBINDEX);
-					logCurrentTime("refreshServerTree(" + (String)redisServerMap.get("name"));
+logCurrentTime("refreshKeys(" + (String)redisServerMap.get("name"));
+					for(int i=0;i<=REDIS_DEFAULT_DB_SIZE;i++) {
+						refreshKeys((String)redisServerMap.get("name"), i);
+					}
+logCurrentTime("refreshServerTree(" + (String)redisServerMap.get("name"));
 					zTree = refreshServerTree((String)redisServerMap.get("name"), DEFAULT_DBINDEX);
 					// test limit flow System.out.println("yes permit");
-					logCurrentTime("continue");
+logCurrentTime("continue");
 				}
-				logCurrentTime("finally {");
+logCurrentTime("finally {");
 			} finally {
 				finishUpdate();
 			}
