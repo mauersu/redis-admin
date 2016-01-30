@@ -155,6 +155,14 @@ logCurrentTime("finally {");
 	@Override
 	public void changeShowType(String state) {
 		showType = ShowTypeEnum.valueOf(state);
+		switch(showType) {
+		case show:
+			//get redisKeys again if init keys with ShowTypeEnum.hide
+			refreshAllKeys();
+			break;
+		case hide:
+			break;
+		}
 	}
 
 }

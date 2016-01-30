@@ -116,9 +116,6 @@ public class RedisController extends RedisApplication implements Constant{
 			@RequestParam String state) {
 		
 		viewService.changeShowType(state);
-		//get redisKeys again if init keys with ShowTypeEnum.hide
-		viewService.refreshAllKeys();
-		
 		return WorkcenterResponseBodyJson.custom().build();
 	}
 	
