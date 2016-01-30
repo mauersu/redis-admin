@@ -1,15 +1,19 @@
 package com.mauersu.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.DataType;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisConnectionUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-import cn.workcenter.common.WorkcenterCodeEnum;
-import cn.workcenter.common.WorkcenterResult;
-import cn.workcenter.common.constant.WebConstant;
 
 import com.mauersu.dao.RedisDao;
 import com.mauersu.service.RedisService;
 import com.mauersu.util.RedisApplication;
+
+import cn.workcenter.common.WorkcenterCodeEnum;
+import cn.workcenter.common.WorkcenterResult;
+import cn.workcenter.common.constant.WebConstant;
 
 @Service
 public class RedisServiceImpl extends RedisApplication implements RedisService, WebConstant  {
@@ -65,9 +69,43 @@ public class RedisServiceImpl extends RedisApplication implements RedisService, 
 		case "HASH":
 			values = redisDao.getHASH(serverName, dbIndex, key);
 			break;
+		case "NONE":
+			//if showType = ShowTypeEnum.hide
+			values = getKV(serverName, dbIndex, key);
+			break;
 		}
 		
 		return WorkcenterResult.custom().setOK(WorkcenterCodeEnum.valueOf(OK_REDISKV_UPDATE), values).build();
+	}
+	
+	private Object getKV(String serverName, int dbIndex, String key) {
+		RedisTemplate redisTemplate = RedisApplication.redisTemplatesMap.get(serverName);
+		RedisConnection connection = RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory());
+		connection.select(dbIndex);
+		DataType dataType = connection.type(key.getBytes());
+		connection.close();
+		Object values = null;
+		switch(dataType) {
+		case STRING:
+			values = redisDao.getSTRING(serverName, dbIndex, key);
+			break;
+		case LIST:
+			values = redisDao.getLIST(serverName, dbIndex, key);
+			break;
+		case SET:
+			values = redisDao.getSET(serverName, dbIndex, key);
+			break;
+		case ZSET:
+			values = redisDao.getZSET(serverName, dbIndex, key);
+			break;
+		case HASH:
+			values = redisDao.getHASH(serverName, dbIndex, key);
+			break;
+		case NONE:
+			//never be here
+			values = null;
+		}
+		return values;
 	}
 	@Override
 	public void delKV(String serverName, int dbIndex, String deleteKeys) {

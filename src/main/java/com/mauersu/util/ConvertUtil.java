@@ -15,7 +15,19 @@ public class ConvertUtil {
 		StringRedisSerializer stringSerializer = new StringRedisSerializer(Charset.forName("UTF8"));
 		for(byte[] byteArray: keysSet) {
 			String converted = stringSerializer.deserialize(byteArray);
-			DataType dateType = connection.type(byteArray);
+			DataType dateType = null;
+			switch(RedisApplication.showType) {
+			case show:
+				dateType = connection.type(byteArray);
+				break;
+			case hide:
+				dateType = DataType.NONE;
+				break;
+			default:
+				dateType = connection.type(byteArray);
+				break;
+			}
+			
 			RKey rkey = new RKey(converted, dateType); 
 			tempList.add(rkey);
 		}

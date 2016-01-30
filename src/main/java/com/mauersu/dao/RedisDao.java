@@ -115,8 +115,9 @@ public class RedisDao extends RedisApplication {
 	public Object getSET(String serverName, int dbIndex, String key) {
 		RedisTemplate<String, Object> redisTemplate = redisTemplateFactory.getRedisTemplate(serverName);
 		redisConnectionDbIndex.set(dbIndex);
-		Set<Object> values = redisTemplate.opsForSet().members(key);
-		return RValue.creatSetValue(values);
+		List<Object> values = redisTemplate.opsForSet().randomMembers(key, 1000);
+		//Set<Object> values = redisTemplate.opsForSet().members(key);
+		return RValue.creatSetValue(new HashSet(values));
 	}
 
 	public Object getZSET(String serverName, int dbIndex, String key) {

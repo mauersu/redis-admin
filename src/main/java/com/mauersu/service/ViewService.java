@@ -16,4 +16,8 @@ public interface ViewService {
 
 	void changeRefreshMode(String mode);
 
+	void changeShowType(String state);
+
+	void refreshAllKeys();
+
 }

@@ -18,6 +18,7 @@
 		<button type="button" class="edit_btn btn btn-primary" >view/update</button>
 		<button value1="delete" type="button" class="delete_btn btn btn-primary" >delete</button>
 		<button type="button" class="refresh_btn btn btn-primary" >refresh</button>
+		<button type="button" class="changeShowType_btn btn btn-primary" value1="${change2ShowType}" >${change2ShowType} Type</button>
 
 		<div class="col-sm-6 col-md-6">
 			<div class="input-group">
@@ -53,7 +54,9 @@
 					<th>#</th>
 					<th>index</th>
 					<th>key</th>
-					<th>type</th>
+					<c:if test="${showType == 'show' }">
+						<th>type</th>
+					</c:if>
 				</tr>
 			</thead>
 			<tbody>
@@ -62,7 +65,9 @@
 						<td><input type="checkbox" name="redisKey" value1="${key.key }" value2="${key.type }" ></td>
 						<td>${status.index + 1}</td>
 						<td>${key.key }</td>
-						<td>${key.type }</td>
+						<c:if test="${showType == 'show' }">
+							<td>${key.type }</td>
+						</c:if>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -139,6 +144,22 @@
 				}
 			});
 		});
+		
+		$(".changeShowType_btn").on("click", function() {
+			var newState = $("this").val();
+			var url = "<%=basePath%>/redis/changeShowType";
+			$.ajax({
+				type: "post", 
+				url: url,
+				dataType: "json", 
+				data: {
+					state: newState,
+				},
+				success: function(data) {
+					modelAlert(data);
+				}
+			})
+		})
 	});
 </script>
 

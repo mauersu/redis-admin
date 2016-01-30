@@ -14,6 +14,7 @@ import com.mauersu.util.Constant;
 import com.mauersu.util.RKey;
 import com.mauersu.util.RedisApplication;
 import com.mauersu.util.RefreshModeEnum;
+import com.mauersu.util.ShowTypeEnum;
 import com.mauersu.util.ztree.RedisZtreeUtil;
 import com.mauersu.util.ztree.ZNode;
 
@@ -69,6 +70,19 @@ logCurrentTime("finally {");
 			// test limit flow System.out.println("no permit");
 		}
 		return zTree;
+	}
+	
+	@Override
+	public void refreshAllKeys() {
+		try {
+			for(Map<String, Object> redisServerMap : RedisApplication.redisServerCache) {
+				for(int i=0;i<=REDIS_DEFAULT_DB_SIZE;i++) {
+					refreshKeys((String)redisServerMap.get("name"), i);
+				}
+			}
+		} finally {
+			finishUpdate();
+		}
 	}
 	
 	private void refreshKeys(String serverName, int dbIndex) {
@@ -136,6 +150,11 @@ logCurrentTime("finally {");
 			}
 		}
 		return rKeySet;
+	}
+
+	@Override
+	public void changeShowType(String state) {
+		showType = ShowTypeEnum.valueOf(state);
 	}
 
 }

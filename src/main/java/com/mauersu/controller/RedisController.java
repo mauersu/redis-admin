@@ -110,6 +110,18 @@ public class RedisController extends RedisApplication implements Constant{
 		return WorkcenterResponseBodyJson.custom().build();
 	}
 	
+	@RequestMapping(value="/changeShowType", method=RequestMethod.POST)
+	@ResponseBody
+	public Object changeShowType(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String state) {
+		
+		viewService.changeShowType(state);
+		//get redisKeys again if init keys with ShowTypeEnum.hide
+		viewService.refreshAllKeys();
+		
+		return WorkcenterResponseBodyJson.custom().build();
+	}
+	
 	@RequestMapping(value="/stringList/{serverName}/{dbIndex}", method=RequestMethod.GET)
 	public Object stringList(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable String serverName, @PathVariable String dbIndex) {
@@ -133,6 +145,8 @@ public class RedisController extends RedisApplication implements Constant{
 		request.setAttribute("dbIndex", dbIndex);
 		request.setAttribute("redisKeys", redisKeys);
 		request.setAttribute("refreshMode", refreshMode.getLabel());
+		request.setAttribute("change2ShowType", showType.getChange2());
+		request.setAttribute("showType", showType.getState());
 		request.setAttribute("viewPage", "redis/list.jsp");
 		return "admin/main";
 	}
