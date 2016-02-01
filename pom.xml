@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mauersu</groupId>
     <artifactId>redis-admin</artifactId>
-    <version>0.0.1.Beta4</version>
+    <version>0.0.1.Final-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>redis admin</name>
@@ -11,7 +11,7 @@
 	
 	<scm>
 		<developerConnection>scm:git:ssh://git@github.com/mauersu/redis-admin.git</developerConnection>
-	  <tag>redis-admin-0.0.1.Beta4</tag>
+	  <tag>HEAD</tag>
   </scm>
 	
     <properties>
