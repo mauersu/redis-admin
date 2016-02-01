@@ -146,7 +146,7 @@
 		});
 		
 		$(".changeShowType_btn").on("click", function() {
-			var newState = $("this").val();
+			var newState = $(this).attr("value1");
 			var url = "<%=basePath%>/redis/changeShowType";
 			$.ajax({
 				type: "post", 

@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
 
 import com.mauersu.dao.RedisTemplateFactory;
+import com.mauersu.exception.ConcurrentException;
 import com.mauersu.util.redis.MyStringRedisTemplate;
 import com.mauersu.util.ztree.RedisZtreeUtil;
 
@@ -46,16 +47,30 @@ public abstract class RedisApplication implements Constant{
 			return null;
 		};
 	};
-	
-	protected boolean getUpdatePermition() {
+	private Semaphore getSempahore() {
 		updatePermition.set(limitUpdate);
-		boolean permit = updatePermition.get().tryAcquire(1);
+		return updatePermition.get();
+		
+	}
+	protected boolean getUpdatePermition() {
+		Semaphore sempahore = getSempahore();
+		boolean permit = sempahore.tryAcquire(1);
 		return permit;
 	}
 	
 	protected void finishUpdate() {
-		final Semaphore semaphore = updatePermition.get();
+		Semaphore semaphore = updatePermition.get();
+		if(semaphore==null) {
+			throw new ConcurrentException("semaphore==null");
+		}
+		final Semaphore fsemaphore = semaphore;
 		new Thread(new Runnable() {
+			
+			Semaphore RSemaphore;
+			{
+				RSemaphore = fsemaphore;
+			}
+			
 			@Override
 			public void run() {
 				try {
@@ -63,7 +78,7 @@ public abstract class RedisApplication implements Constant{
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				semaphore.release(1);
+				RSemaphore.release(1);
 				logCurrentTime("semaphore.release(1) finish");
 			}
 		}).start();

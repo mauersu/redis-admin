@@ -74,6 +74,7 @@ logCurrentTime("finally {");
 	
 	@Override
 	public void refreshAllKeys() {
+		boolean permit = getUpdatePermition();
 		try {
 			for(Map<String, Object> redisServerMap : RedisApplication.redisServerCache) {
 				for(int i=0;i<=REDIS_DEFAULT_DB_SIZE;i++) {
