@@ -60,10 +60,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${redisKeys }" var="key" varStatus="status">
+				<c:forEach items="${redisKeys }" var="key" varStatus="status" begin="">
 					<tr class="redisKey">
 						<td><input type="checkbox" name="redisKey" value1="${key.key }" value2="${key.type }" ></td>
-						<td>${status.index + 1}</td>
+						<td>${pagination.current_page * pagination.items_per_page + status.index + 1}</td>
 						<td>${key.key }</td>
 						<c:if test="${showType == 'show' }">
 							<td>${key.type }</td>
@@ -72,6 +72,13 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		
+		<nav>
+		  <ul id="listPagination" class="pagination">
+		  </ul>
+		</nav>
+
+		<div id="listPagination1" class="right flickr"></div>
 	</div>
 </div>
 
@@ -82,13 +89,26 @@
 <script src="<%=basePath%>/js/admin/redis/dataTypeLineHtml.js"></script>
 <script src="<%=basePath%>/js/admin/redis/addRedisKV.js"></script>
 <script src="<%=basePath%>/js/admin/redis/updateRedisKV.js"></script>
-
 <script>
 	var serverName = '${serverName}';
 	var dbIndex = '${dbIndex}';
 	var basePath = '${basePath}';
 
+	function pageselectCallback(page_id, jq) {
+    }
+	
 	$(document).ready(function() {
+		
+        $("#listPagination").pagination('${pagination.maxentries}', {
+            callback: pageselectCallback,
+            prev_text: '${pagination.prev_text}',
+            next_text: '${pagination.next_text}',
+            items_per_page: parseInt('${pagination.items_per_page}'), 
+            num_display_entries: parseInt('${pagination.num_display_entries}'), 
+            current_page: parseInt('${pagination.current_page}'),   
+            num_edge_entries: parseInt('${pagination.num_edge_entries}'), 
+            link_to:'${pagination.link_to}'
+        }); 
 		
 		$(".query_a").on("click", function() {
 			var query_a_ch = $(this).text();

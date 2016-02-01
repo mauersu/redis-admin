@@ -23,6 +23,7 @@
 <script src="<%=basePath%>/dist/js/bootstrap.min.js"></script>
 <script src="<%=basePath%>/js/jquery.form.js"></script>
 <script src="<%=basePath%>/js/jquery.table.js"></script>
+<script src="<%=basePath%>/js/jquery.pagination.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/jquery.ztree.all-3.5.min.js"></script>
 
 </head>

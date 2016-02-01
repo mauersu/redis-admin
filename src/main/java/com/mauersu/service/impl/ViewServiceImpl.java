@@ -1,5 +1,7 @@
 package com.mauersu.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import com.mauersu.service.ViewService;
 import com.mauersu.util.Constant;
+import com.mauersu.util.Pagination;
 import com.mauersu.util.RKey;
 import com.mauersu.util.RedisApplication;
 import com.mauersu.util.RefreshModeEnum;
@@ -98,29 +101,51 @@ logCurrentTime("finally {");
 	}
 
 	@Override
-	public Set<RKey> getRedisKeys(String serverName, String dbIndex, String[] keyPrefixs, String queryKey, String queryValue) {
+	public Set<RKey> getRedisKeys(Pagination pagination, String serverName, String dbIndex, String[] keyPrefixs, String queryKey, String queryValue) {
 		List<RKey> allRedisKeys = redisKeysListMap.get(serverName + DEFAULT_SEPARATOR + dbIndex);
-		if(allRedisKeys == null || allRedisKeys.size()==0) 
-			return new TreeSet<RKey>();
+		
+		Set<RKey> resultRedisKeys = null;
+		
+		if(allRedisKeys == null || allRedisKeys.size()==0) {
+			pagination.setMaxentries(0);
+			resultRedisKeys = new TreeSet<RKey>();
+			return resultRedisKeys;
+		}
+		
 		if(keyPrefixs == null || keyPrefixs.length == 0) {
 			logCurrentTime("keyPrefixs == null");
 			if(StringUtils.isEmpty(queryValue)) {
 				logCurrentTime("new TreeSet<RKey>(allRedisKeys);");
-				return new TreeSet<RKey>(allRedisKeys);
+				int toIndex = pagination.getToIndex()>allRedisKeys.size()?allRedisKeys.size():pagination.getToIndex();
+				List<RKey> resultList = allRedisKeys.subList(pagination.getFromIndex(), toIndex);
+				resultRedisKeys = new TreeSet<RKey>(resultList);
+				pagination.setMaxentries(allRedisKeys.size());
+			} else {
+				List<RKey> queryRedisKeys = getQueryRedisKeys(allRedisKeys, queryKey, queryValue);
+				Collections.sort(queryRedisKeys);//arraylist sort
+				int toIndex = pagination.getToIndex()>queryRedisKeys.size()?queryRedisKeys.size():pagination.getToIndex();
+				List<RKey> resultList = queryRedisKeys.subList(pagination.getFromIndex(), toIndex);
+				resultRedisKeys = new TreeSet<RKey>(resultList);
+				pagination.setMaxentries(queryRedisKeys.size());
 			}
-			Set<RKey> queryRedisKeys = getQueryRedisKeys(allRedisKeys, queryKey, queryValue);
-			return queryRedisKeys;
+		} else {
+			StringBuffer keyPrefix = new StringBuffer("");
+			for(String prefix: keyPrefixs) {
+				keyPrefix.append(prefix).append(DEFAULT_REDISKEY_SEPARATOR);
+			}
+			List<RKey> conformRedisKeys = getConformRedisKeys(allRedisKeys, keyPrefix.toString());
+			Collections.sort(conformRedisKeys);//arraylist sort
+			int toIndex = pagination.getToIndex()>conformRedisKeys.size()?conformRedisKeys.size():pagination.getToIndex();
+			List<RKey> resultList = conformRedisKeys.subList(pagination.getFromIndex(), toIndex);
+			resultRedisKeys = new TreeSet<RKey>(resultList);
+			pagination.setMaxentries(conformRedisKeys.size());
 		}
-		StringBuffer keyPrefix = new StringBuffer("");
-		for(String prefix: keyPrefixs) {
-			keyPrefix.append(prefix).append(DEFAULT_REDISKEY_SEPARATOR);
-		}
-		Set<RKey> conformRedisKeys = getConformRedisKeys(allRedisKeys, keyPrefix.toString());
-		return conformRedisKeys;
+		System.out.println(pagination.getMaxentries());
+		return resultRedisKeys;
 	}
 
-	private Set<RKey> getQueryRedisKeys(List<RKey> allRedisKeys, String queryKey, String queryValue) {
-		TreeSet<RKey> rKeySet = new TreeSet<RKey>();
+	private List<RKey> getQueryRedisKeys(List<RKey> allRedisKeys, String queryKey, String queryValue) {
+		List<RKey> rKeySet = new ArrayList<RKey>();
 		for(RKey rKey : allRedisKeys) {
 			switch(queryKey) {
 			case MIDDLE_KEY:
@@ -143,8 +168,8 @@ logCurrentTime("finally {");
 		return rKeySet;
 	}
 
-	private Set<RKey> getConformRedisKeys(List<RKey> allRedisKeys, String keyPrefix) {
-		TreeSet<RKey> rKeySet = new TreeSet<RKey>();
+	private List<RKey> getConformRedisKeys(List<RKey> allRedisKeys, String keyPrefix) {
+		List<RKey> rKeySet = new ArrayList<RKey>();
 		for(RKey rKey : allRedisKeys) {
 			if(rKey.startsWith(keyPrefix)) {
 				rKeySet.add(rKey);

@@ -20,6 +20,7 @@ public interface Constant {
 	public static final CopyOnWriteArrayList<ZNode> 				redisNavigateZtree 		= 	new CopyOnWriteArrayList<ZNode>();
 	public static final CopyOnWriteArrayList<Map<String, Object>>	redisServerCache 		=   new CopyOnWriteArrayList<Map<String, Object>>();
 
+	public static final int DEFAULT_ITEMS_PER_PAGE											= 10;
 	public static final String DEFAULT_REDISKEY_SEPARATOR		 							= ":";
 	public static final int REDIS_DEFAULT_DB_SIZE 											= 15;
 	public static final String DEFAULT_SEPARATOR											= "_";

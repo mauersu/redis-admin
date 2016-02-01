@@ -1,6 +1,5 @@
 package com.mauersu.controller;
 
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +21,10 @@ import com.mauersu.service.RedisService;
 import com.mauersu.service.ViewService;
 import com.mauersu.util.Constant;
 import com.mauersu.util.ConvertUtil;
+import com.mauersu.util.Pagination;
 import com.mauersu.util.QueryEnum;
 import com.mauersu.util.RKey;
 import com.mauersu.util.RedisApplication;
-import com.mauersu.util.ztree.RedisZtreeUtil;
 import com.mauersu.util.ztree.ZNode;
 
 @Controller
@@ -128,10 +127,14 @@ public class RedisController extends RedisApplication implements Constant{
 		String queryKey = StringUtil.getParameterByDefault(request, "queryKey", MIDDLE_KEY);
 		String queryKey_ch = QueryEnum.valueOf(queryKey).getQueryKeyCh();
 		String queryValue = StringUtil.getParameterByDefault(request, "queryValue", EMPTY_STRING);
+		String queryByKeyPrefixs = StringUtil.getParameterByDefault(request, "queryByKeyPrefixs", EMPTY_STRING);
 		
 		String[] keyPrefixs = request.getParameterValues("keyPrefixs");
+		
+		Pagination pagination = stringListPagination(request, queryKey, queryKey_ch, queryValue, queryByKeyPrefixs);
+		
 		logCurrentTime("viewService.getRedisKeys start");
-		Set<RKey> redisKeys = viewService.getRedisKeys(serverName, dbIndex, keyPrefixs, queryKey, queryValue);
+		Set<RKey> redisKeys = viewService.getRedisKeys(pagination, serverName, dbIndex, keyPrefixs, queryKey, queryValue);
 		logCurrentTime("viewService.getRedisKeys end");
 		request.setAttribute("redisServers", redisServerCache);
 		request.setAttribute("basePath", BASE_PATH);
@@ -144,10 +147,46 @@ public class RedisController extends RedisApplication implements Constant{
 		request.setAttribute("refreshMode", refreshMode.getLabel());
 		request.setAttribute("change2ShowType", showType.getChange2());
 		request.setAttribute("showType", showType.getState());
+		request.setAttribute("pagination", pagination.createLinkTo());
 		request.setAttribute("viewPage", "redis/list.jsp");
 		return "admin/main";
 	}
 	
+	private Pagination stringListPagination(HttpServletRequest request, String queryKey, String queryKey_ch, String queryValue, String queryByKeyPrefixs) {
+		Pagination pagination = getPagination(request);
+		String url = "?" + "queryKey=" + queryKey + "&queryKey_ch=" + queryKey_ch + "&queryValue=" + queryValue;
+		pagination.setLink_to(url);
+		if(!StringUtil.isEmpty(queryByKeyPrefixs)) {
+			
+		}
+		return pagination;
+	}
+
+	private Pagination getPagination(HttpServletRequest request) {
+		String items_per_page = StringUtil.getParameterByDefault(request, "items_per_page", DEFAULT_ITEMS_PER_PAGE +"");
+		String num_display_entries = StringUtil.getParameterByDefault(request, "num_display_entries", "3");
+		String visit_page = StringUtil.getParameterByDefault(request, "visit_page", "0");
+		String num_edge_entries = StringUtil.getParameterByDefault(request, "num_edge_entries", "2");
+		String prev_text = StringUtil.getParameterByDefault(request, "prev_text", "Prev");
+		String next_text = StringUtil.getParameterByDefault(request, "next_text", "Next");
+		String ellipse_text = StringUtil.getParameterByDefault(request, "ellipse_text", "Next");
+		String prev_show_always = StringUtil.getParameterByDefault(request, "prev_show_always", "true");
+		String next_show_always = StringUtil.getParameterByDefault(request, "next_show_always", "true");
+		
+		Pagination pagination = new Pagination();
+		pagination.setItems_per_page(Integer.parseInt(items_per_page));
+		pagination.setNum_display_entries(Integer.parseInt(num_display_entries));
+		pagination.setCurrent_page(Integer.parseInt(visit_page));
+		pagination.setNum_edge_entries(Integer.parseInt(num_edge_entries));
+		pagination.setPrev_text(prev_text);
+		pagination.setNext_text(next_text);
+		pagination.setEllipse_text(ellipse_text);
+		pagination.setPrev_show_always(Boolean.parseBoolean(prev_show_always));
+		pagination.setNext_show_always(Boolean.parseBoolean(next_show_always));
+
+		return pagination;
+	}
+
 	@RequestMapping(value="/KV", method=RequestMethod.POST)
 	@ResponseBody
 	public Object updateKV(HttpServletRequest request, HttpServletResponse response, 
