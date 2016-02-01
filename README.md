@@ -25,6 +25,7 @@ This is a redis client web tool written based on Java EE and Jedis. It's my obje
 ##  Quick Start
 
 `First Step`: edit file:'redis.properties' :
+
 **Notice**: redis.server.num must set
 
 ```
