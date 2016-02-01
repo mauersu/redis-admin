@@ -24,8 +24,8 @@ This is a redis client web tool written based on Java EE and Jedis. It's my obje
 
 ##  Quick Start
 
-`First Step`:edit file:'redis.properties' :
-#Notice: ***redis.server.num*** must set
+`First Step`: edit file:'redis.properties' :
+#Notice: redis.server.num must set
 
 ```
 redis.server.num=1
@@ -43,7 +43,7 @@ redis.port.2=yours
 redis.password.2=yours
 ```
 
-`Second Step`:edit file:'application.properties' :
+`Second Step`: edit file:'application.properties' :
 
 ```
 ####Security Manager
