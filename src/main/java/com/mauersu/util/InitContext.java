@@ -1,5 +1,6 @@
 package com.mauersu.util;
 
+import java.rmi.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,7 @@ public class InitContext extends RedisApplication implements Constant  {
 	
 	@PostConstruct
 	public void initRedisServers() {
+		String currentServerName = "";
 		try {
 			int serverNum = Integer.parseInt(env.getProperty(REDISPROPERTIES_SERVER_NUM_KEY));
 			for(int i=1;i<=serverNum;i++) {
@@ -36,7 +38,7 @@ public class InitContext extends RedisApplication implements Constant  {
 				String host = env.getProperty(REDISPROPERTIES_HOST_PROFIXKEY + i);
 				int port = Integer.parseInt(env.getProperty(REDISPROPERTIES_PORT_PROFIXKEY + i));
 				String password = env.getProperty(REDISPROPERTIES_PASSWORD_PROFIXKEY + i);
-				
+				currentServerName = host;
 				createRedisConnection(name, host, port, password);
 				
 				runUpdateLimit();
@@ -44,6 +46,9 @@ public class InitContext extends RedisApplication implements Constant  {
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			throw new RedisInitException(e);
+		} catch (Throwable e1) {
+			e1.printStackTrace();
+			throw new RedisInitException(currentServerName + " init failed", e1);
 		}
 	}
 	

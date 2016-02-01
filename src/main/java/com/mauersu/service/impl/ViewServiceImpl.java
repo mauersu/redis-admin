@@ -140,7 +140,6 @@ logCurrentTime("finally {");
 			resultRedisKeys = new TreeSet<RKey>(resultList);
 			pagination.setMaxentries(conformRedisKeys.size());
 		}
-		System.out.println(pagination.getMaxentries());
 		return resultRedisKeys;
 	}
 

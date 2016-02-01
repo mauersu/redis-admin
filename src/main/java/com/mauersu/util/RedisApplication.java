@@ -1,5 +1,6 @@
 package com.mauersu.util;
 
+import java.rmi.ConnectException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import com.mauersu.dao.RedisTemplateFactory;
 import com.mauersu.exception.ConcurrentException;
+import com.mauersu.exception.RedisInitException;
 import com.mauersu.util.redis.MyStringRedisTemplate;
 import com.mauersu.util.ztree.RedisZtreeUtil;
 
