@@ -25,7 +25,7 @@ This is a redis client web tool written based on Java EE and Jedis. It's my obje
 ##  Quick Start
 
 `First Step`: edit file:'redis.properties' :
-#Notice: redis.server.num must set
+**Notice**: redis.server.num must set
 
 ```
 redis.server.num=1
@@ -62,7 +62,5 @@ move war to '../tomcat/wabapps/.' and start tomcat
 open your brower and visit: http://localhoost:8080/redis-admin/redis
 
 then, enter username and password what you set in file 'application.properties'
-
-that's all have fun ^ ^ 
 
 ![img-source-from-https://github.com/docker/dockercraft](https://github.com/docker/dockercraft/raw/master/docs/img/contribute.png?raw=true)
