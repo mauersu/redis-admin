@@ -60,7 +60,7 @@ move war to '../tomcat/wabapps/.' and start tomcat
 
 `Last Step`: visit redis-admin
 
-open your brower and visit: http://localhoost:8080/redis-admin/redis
+open your brower and visit: http://localhost:8080/redis-admin/redis
 
 then, enter username and password what you set in file 'application.properties'
 
