@@ -64,4 +64,8 @@ open your brower and visit: http://localhost:8080/redis-admin/redis
 
 then, enter username and password what you set in file 'application.properties'
 
+##  FAQ
+
+* [**FAQ**](https://github.com/mauersu/redis-admin/wiki/FAQ)
+
 ![img-source-from-https://github.com/docker/dockercraft](https://github.com/docker/dockercraft/raw/master/docs/img/contribute.png?raw=true)
