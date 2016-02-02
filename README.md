@@ -64,6 +64,13 @@ open your brower and visit: http://localhost:8080/redis-admin/redis
 
 then, enter username and password what you set in file 'application.properties'
 
+
+##  Releases Notes
+
+**Please Note: trunk is current development branch.**
+
+* [**Releases-Notes**](https://github.com/mauersu/redis-admin/wiki/Recent-Releases)
+
 ##  FAQ
 
 * [**FAQ**](https://github.com/mauersu/redis-admin/wiki/FAQ)
