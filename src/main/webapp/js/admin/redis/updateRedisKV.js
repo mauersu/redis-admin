@@ -290,7 +290,11 @@ $(document).ready(function() {
 				dataType: dataType,
 			},
 			success : function(data) {
-				$('#'+ dataType + 'FormTable').tableData(data.data); 
+				if(dataType=='NONE') {
+					dataType = data.data.dataType;
+					$("#updateModal_dataType").val(dataType);
+				}
+				$('#'+ dataType + 'FormTable').tableData(data.data.values); 
 				$("#updateModal").modal('show');
 			}
 		});
@@ -342,7 +346,11 @@ $(document).ready(function() {
 				dataType: dataType,
 			},
 			success : function(data) {
-				$('#'+ dataType + 'FormTable').tableData(data.data); 
+				if(dataType=='NONE') {
+					dataType = data.data.dataType;
+					$("#updateModal_dataType").val(dataType);
+				}
+				$('#'+ dataType + 'FormTable').tableData(data.data.values); 
 				$("#updateModal").modal('show');
 			}
 		});

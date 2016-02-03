@@ -71,11 +71,30 @@ public class RedisServiceImpl extends RedisApplication implements RedisService, 
 			break;
 		case "NONE":
 			//if showType = ShowTypeEnum.hide
+			dataType = getDataType(serverName, dbIndex, key);
 			values = getKV(serverName, dbIndex, key);
 			break;
 		}
 		
-		return WorkcenterResult.custom().setOK(WorkcenterCodeEnum.valueOf(OK_REDISKV_UPDATE), values).build();
+		final String dataType1 = dataType;
+		final Object values1 = values;
+		return WorkcenterResult.custom().setOK(WorkcenterCodeEnum.valueOf(OK_REDISKV_UPDATE), new Object() {
+				public String dataType;
+				public Object values;
+				{
+					dataType = dataType1;
+					values = values1;
+				}
+			}).build();
+	}
+
+	private String getDataType(String serverName, int dbIndex, String key) {
+		RedisTemplate redisTemplate = RedisApplication.redisTemplatesMap.get(serverName);
+		RedisConnection connection = RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory());
+		connection.select(dbIndex);
+		DataType dataType = connection.type(key.getBytes());
+		connection.close();
+		return dataType.name().toUpperCase();
 	}
 	
 	private Object getKV(String serverName, int dbIndex, String key) {

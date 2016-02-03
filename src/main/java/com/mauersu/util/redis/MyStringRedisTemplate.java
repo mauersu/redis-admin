@@ -15,12 +15,16 @@
  */
 package com.mauersu.util.redis;
 
+import java.util.Collection;
+
 import org.springframework.data.redis.connection.DefaultStringRedisConnection;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.StringRedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.util.CollectionUtils;
 
 /**
  * String-focused extension of RedisTemplate. Since most operations against Redis are String based, this class provides
@@ -60,4 +64,5 @@ public class MyStringRedisTemplate extends MyRedisTemplate<String, String> {
 	protected RedisConnection preProcessConnection(RedisConnection connection, boolean existingConnection) {
 		return new DefaultStringRedisConnection(connection);
 	}
+	
 }

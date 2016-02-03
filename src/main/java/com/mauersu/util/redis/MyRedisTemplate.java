@@ -1,5 +1,8 @@
 package com.mauersu.util.redis;
 
+import java.util.Collection;
+
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.BoundSetOperations;
@@ -7,16 +10,23 @@ import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.BoundZSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import com.mauersu.exception.MethodNotSupportException;
 import com.mauersu.util.RedisApplication;
 
 public class MyRedisTemplate<K, V> extends RedisTemplate<K, V> {
 
+	private volatile int dbIndex;
+	
 	@Override
 	public ValueOperations<K, V> opsForValue() {
 		int dbIndex = RedisApplication.redisConnectionDbIndex.get();
@@ -71,4 +81,60 @@ public class MyRedisTemplate<K, V> extends RedisTemplate<K, V> {
 		//return new DefaultBoundValueOperations<K, V>(key, this);
 	}
 	
+	// delete 
+	@Override
+	public void delete(K key) {
+		final byte[] rawKey = rawKey(key);
+
+		execute(new RedisCallback<Object>() {
+
+			public Object doInRedis(RedisConnection connection) {
+				int dbIndex = RedisApplication.redisConnectionDbIndex.get();
+				connection.select(dbIndex);
+				connection.del(rawKey);
+				return null;
+			}
+		}, true);
+	}
+	
+	@Override
+	public void delete(Collection<K> keys) {
+		if (CollectionUtils.isEmpty(keys)) {
+			return;
+		}
+
+		final byte[][] rawKeys = rawKeys(keys);
+
+		execute(new RedisCallback<Object>() {
+
+			public Object doInRedis(RedisConnection connection) {
+				int dbIndex = RedisApplication.redisConnectionDbIndex.get();
+				connection.select(dbIndex);
+				connection.del(rawKeys);
+				return null;
+			}
+		}, true);
+	}
+	
+	private RedisSerializer keySerializer = new StringRedisSerializer();
+	
+	@SuppressWarnings("unchecked")
+	private byte[] rawKey(Object key) {
+		Assert.notNull(key, "non null key required");
+		if (keySerializer == null && key instanceof byte[]) {
+			return (byte[]) key;
+		}
+		return keySerializer.serialize(key);
+	}
+
+	private byte[][] rawKeys(Collection<K> keys) {
+		final byte[][] rawKeys = new byte[keys.size()][];
+
+		int i = 0;
+		for (K key : keys) {
+			rawKeys[i++] = rawKey(key);
+		}
+
+		return rawKeys;
+	}
 }
