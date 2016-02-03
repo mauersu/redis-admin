@@ -69,7 +69,7 @@ then, enter username and password what you set in file 'application.properties'
 
 **Please Note: trunk is current development branch.**
 
-* [**Releases-Notes**](https://github.com/mauersu/redis-admin/wiki/Recent-Releases)
+* [**Releases-Notes**](https://github.com/mauersu/redis-admin/wiki/Recent-Releases-Notes)
 
 ##  FAQ
 
