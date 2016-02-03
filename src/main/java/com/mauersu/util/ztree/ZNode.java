@@ -55,11 +55,28 @@ public class ZNode extends ZLeaf{
 		children.add(zLeaf);
 	}
 
-	//remove children and set new children
-	/*public void resetChildren(ZNode dbIndexZnode) {
-		children = new TreeSet<ZLeaf>();
-		children.add(dbIndexZnode);
-	}*/
+	@Override
+	public int hashCode() {
+		return this.getName().hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return this.getName();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) return false;
+		if(o instanceof ZNode) {
+			ZNode zno = (ZNode) o;
+			return this.getName().equals(zno.getName());
+		}
+		if(o instanceof String) {
+			return this.getName().equals(o);
+		}
+		return super.equals(o);
+	}
 	
 	public void resetChildren() {
 		children = new TreeSet<ZLeaf>();

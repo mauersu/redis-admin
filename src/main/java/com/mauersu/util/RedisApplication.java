@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Semaphore;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisConnectionUtils;
@@ -24,6 +26,8 @@ import com.mauersu.util.ztree.RedisZtreeUtil;
 
 public abstract class RedisApplication implements Constant{
 
+	private static Log log = LogFactory.getLog(RedisApplication.class);
+	
 	public static volatile RefreshModeEnum refreshMode = RefreshModeEnum.manually;
 	public static volatile ShowTypeEnum showType = ShowTypeEnum.show;
 	public static String BASE_PATH = "/redis-admin";
@@ -38,12 +42,6 @@ public abstract class RedisApplication implements Constant{
 		};
 	};
 	
-	/*private static ThreadLocal<RedisConnectionHolder> 	redisConnectionThreadLocal = new ThreadLocal<RedisConnectionHolder>() {
-		@Override
-		protected RedisConnectionHolder initialValue() {
-			return null;
-		};
-	};*/
 	protected static ThreadLocal<Semaphore> updatePermition = new ThreadLocal<Semaphore>() {
 		@Override
 		protected Semaphore initialValue() {
@@ -79,7 +77,7 @@ public abstract class RedisApplication implements Constant{
 				try {
 					Thread.sleep(LIMIT_TIME * 1000);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					log.warn("finishUpdate 's release semaphore thread had be interrupted");
 				}
 				RSemaphore.release(1);
 				logCurrentTime("semaphore.release(1) finish");
@@ -96,33 +94,13 @@ public abstract class RedisApplication implements Constant{
 						Thread.sleep(LIMIT_TIME * 1000);
 						limitUpdate = new Semaphore(1);
 					} catch(InterruptedException e) {
-						e.printStackTrace();
+						log.warn("runUpdateLimit 's new semaphore thread had be interrupted");
+						break;
 					}
 				}
 			}
 		}).start();
 	}
-	
-	// connection pool will cause deadlock , mast one thread one connection by RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory())
-	// see :RedisTemplateFactory.getRedisConnection(redisName, dbIndex);
-	/*private RedisConnection getThreadLocalRedisConnection(String redisName, int dbIndex) {
-		RedisConnectionHolder redisConnectionHolder = redisConnectionThreadLocal.get();
-		if(redisConnectionHolder==null||!redisName.equals(redisConnectionHolder.getServerName())) {
-			RedisConnection redisConnection = RedisTemplateFactory.getRedisConnection(redisName, dbIndex);
-			RedisConnectionHolder newRedisConnectionHolder = new RedisConnectionHolder(redisName, redisConnection);
-			redisConnectionThreadLocal.set(newRedisConnectionHolder);
-			return newRedisConnectionHolder.getRedisConnection();
-		}
-		return redisConnectionHolder.getRedisConnection();
-	}*/
-	
-	/*private RedisConnection getRedisConnection() {
-		RedisConnection redisConnection = redisConnectionThreadLocal.get();
-		if(redisConnection==null) {
-			throw new RedisConnectionException("redisConnectionThreadLocal is not init");
-		}
-		return redisConnection;
-	}*/
 	
 	protected void createRedisConnection(String name, String host, int port, String password) {
 		JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
@@ -170,8 +148,6 @@ public abstract class RedisApplication implements Constant{
 	}
 	
 	protected static void logCurrentTime(String code) {
-		if(debug) {
-			System.out.println("       code:"+code+"        当前时间:" + System.currentTimeMillis());
-		}
+		log.debug("       code:"+code+"        当前时间:" + System.currentTimeMillis());
 	}
 }

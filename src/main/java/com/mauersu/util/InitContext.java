@@ -9,6 +9,8 @@ import java.util.concurrent.Semaphore;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -25,6 +27,8 @@ import com.mauersu.util.ztree.RedisZtreeUtil;
 @SuppressWarnings("rawtypes")
 public class InitContext extends RedisApplication implements Constant  {
 
+	private static Log log = LogFactory.getLog(InitContext.class);
+	
 	@Autowired
 	private Environment env;
 	
@@ -44,10 +48,10 @@ public class InitContext extends RedisApplication implements Constant  {
 				runUpdateLimit();
 			}
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
+			log.error("initRedisServers: " + currentServerName+" occur NumberFormatException :" + e.getMessage());
 			throw new RedisInitException(e);
 		} catch (Throwable e1) {
-			e1.printStackTrace();
+			log.error("initRedisServers: " + currentServerName+" occur Throwable :" + e1.getMessage());
 			throw new RedisInitException(currentServerName + " init failed", e1);
 		}
 	}
