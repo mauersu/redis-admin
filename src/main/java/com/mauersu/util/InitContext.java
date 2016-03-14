@@ -45,7 +45,7 @@ public class InitContext extends RedisApplication implements Constant  {
 				currentServerName = host;
 				createRedisConnection(name, host, port, password);
 				
-				runUpdateLimit();
+				//runUpdateLimit();
 			}
 		} catch (NumberFormatException e) {
 			log.error("initRedisServers: " + currentServerName+" occur NumberFormatException :" + e.getMessage());

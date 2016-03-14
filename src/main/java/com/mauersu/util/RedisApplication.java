@@ -1,6 +1,5 @@
 package com.mauersu.util;
 
-import java.rmi.ConnectException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,9 +17,7 @@ import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
 
-import com.mauersu.dao.RedisTemplateFactory;
 import com.mauersu.exception.ConcurrentException;
-import com.mauersu.exception.RedisInitException;
 import com.mauersu.util.redis.MyStringRedisTemplate;
 import com.mauersu.util.ztree.RedisZtreeUtil;
 
@@ -39,16 +36,24 @@ public abstract class RedisApplication implements Constant{
 		@Override
 		protected Integer initialValue() {
 			return 0;
-		};
+		}
 	};
 	
 	protected static ThreadLocal<Semaphore> updatePermition = new ThreadLocal<Semaphore>() {
 		@Override
 		protected Semaphore initialValue() {
 			return null;
-		};
+		}
 	};
+	
+	protected static ThreadLocal<Long> startTime = new ThreadLocal<Long>() {
+		protected Long initialValue() {
+			return 0l;
+		}
+	};
+	
 	private Semaphore getSempahore() {
+		startTime.set(System.currentTimeMillis());
 		updatePermition.set(limitUpdate);
 		return updatePermition.get();
 		
@@ -74,8 +79,13 @@ public abstract class RedisApplication implements Constant{
 			
 			@Override
 			public void run() {
+				long start = startTime.get();
+				long now = System.currentTimeMillis();
 				try {
-					Thread.sleep(LIMIT_TIME * 1000);
+					long needWait = start + LIMIT_TIME * 1000 - now;
+					if(needWait > 0L) {
+						Thread.sleep(needWait);
+					}
 				} catch (InterruptedException e) {
 					log.warn("finishUpdate 's release semaphore thread had be interrupted");
 				}
@@ -85,7 +95,8 @@ public abstract class RedisApplication implements Constant{
 		}).start();
 	}
 	
-	protected void runUpdateLimit() {
+	//this idea is not good
+	/*protected void runUpdateLimit() {
 		new Thread(new Runnable () {
 			@Override
 			public void run() {
@@ -100,7 +111,7 @@ public abstract class RedisApplication implements Constant{
 				}
 			}
 		}).start();
-	}
+	}*/
 	
 	protected void createRedisConnection(String name, String host, int port, String password) {
 		JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
