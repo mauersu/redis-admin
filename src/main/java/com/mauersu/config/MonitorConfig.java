@@ -28,7 +28,7 @@ import org.springframework.context.annotation.PropertySources;
  */
 @Configuration
 @ComponentScan(basePackages = {"com.mauersu.controller", "com.mauersu"})
-@Import({WebConfig.class, RedisConfig.class, Security.class})
+@Import({WebConfig.class, Security.class})
 @PropertySources({@PropertySource("classpath:/application.properties"), @PropertySource("classpath:/redis.properties")})
 public class MonitorConfig {
 }

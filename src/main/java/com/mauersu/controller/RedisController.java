@@ -38,12 +38,10 @@ public class RedisController extends RedisApplication implements Constant{
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public Object home(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("basePath", BASE_PATH);
-		request.setAttribute("viewPage", "home.jsp");
 		String defaultServerName = (String) (RedisApplication.redisServerCache.get(0)==null?"":RedisApplication.redisServerCache.get(0).get("name"));
 		request.setAttribute("serverName", defaultServerName);
 		request.setAttribute("dbIndex", DEFAULT_DBINDEX);
-		return "admin/main";
+		return "redirect:/redis/stringList/"+defaultServerName + "/" +DEFAULT_DBINDEX;
 	}
 	
 	@RequestMapping(value="/index", method=RequestMethod.GET)

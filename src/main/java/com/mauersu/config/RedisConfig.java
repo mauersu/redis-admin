@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 
 import com.mauersu.exception.RedisInitException;
 
-@Configuration
 public class RedisConfig {
 
 	private static Log log = LogFactory.getLog(RedisConfig.class);
