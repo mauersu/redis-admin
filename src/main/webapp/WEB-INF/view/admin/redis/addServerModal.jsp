@@ -55,7 +55,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="close_btn btn btn-default" data-dismiss="modal">close</button>
-				<button value1="addServer" type="button" class="addServer_btn btn btn-primary">addServer</button>
+				<button value1="addServer" type="button" class="addServer_btn btn btn-info">addServer</button>
 			</div>
 		</div>
 	</div>

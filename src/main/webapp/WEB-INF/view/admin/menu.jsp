@@ -1,23 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-	String basePath = request.getContextPath();
-%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!-- left nav  -->
-<div class="col-sm-1 col-md-1 sidebar">
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="${pageContext.request.contextPath}/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
-	<ul class="nav nav-sidebar">
-		<li><a id="menu_a" href="javascript:void(0);">Redis</a></li>
-	</ul>
-	
-	
+<div class="navbar-default sidebar" role="navigation">
+	<div class="sidebar-nav navbar-collapse">
+		<ul class="nav" id="side-menu">
+			<li>
+				<a href="javascript:void(0);" value2="${pageContext.request.contextPath}/redis/stringList/${serverName}/${dbIndex}">
+					<i class="fa fa-dashboard fa-fw"></i>Redis
+				</a>
+			</li>
+		</ul>
+	</div>
+	<!-- /.sidebar-collapse -->
 </div>
+<!-- /.navbar-static-side -->
 
-<script>
-	$(document).ready(function() {
-		$("#menu_a").on("click", function() {
-			window.location.href = '<%=basePath%>' + '/redis/stringList/' + "${serverName}" + '/' + "${dbIndex}";
-		});
-	})
-
-</script>

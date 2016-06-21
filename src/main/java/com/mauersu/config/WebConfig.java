@@ -36,6 +36,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/img/**").addResourceLocations("img/");
         registry.addResourceHandler("/js/**").addResourceLocations("js/");
         registry.addResourceHandler("/dist/**").addResourceLocations("dist/");
+        registry.addResourceHandler("/bower_components/**").addResourceLocations("bower_components/");
+        registry.addResourceHandler("/sb-admin/**").addResourceLocations("sb-admin/");
+        
     }
 
     @Bean

@@ -8,17 +8,17 @@
 <div class="col-sm-11 col-sm-offset-1 col-md-11 col-md-offset-1 main">
 	
 	<div class="col-sm-4 col-md-4">
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addServerModal" data-whatever="addServer">addServer</button>
-		<button type="button" class="refresh_btn btn btn-primary" >refresh</button>
+		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addServerModal" data-whatever="addServer">addServer</button>
+		<button type="button" class="refresh_btn btn btn-default" >refresh</button>
 	</div>
 	
 	<!-- <div class="row col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2"> -->
 	<div class="row col-sm-offset-4 col-md-offset-4">
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" data-whatever="add">add</button>
-		<button type="button" class="edit_btn btn btn-primary" >view/update</button>
-		<button value1="delete" type="button" class="delete_btn btn btn-primary" >delete</button>
-		<button type="button" class="refresh_btn btn btn-primary" >refresh</button>
-		<button type="button" class="changeShowType_btn btn btn-primary" value1="${change2ShowType}" >${change2ShowType} Type</button>
+		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addModal" data-whatever="add">add</button>
+		<button type="button" class="edit_btn btn btn-info" >view/update</button>
+		<button type="button" class="delete_btn btn btn-info" value1="delete" >delete</button>
+		<button type="button" class="refresh_btn btn btn-default" >refresh</button>
+		<button type="button" class="changeShowType_btn btn btn-default" value1="${change2ShowType}" >${change2ShowType} Type</button>
 
 		<div class="col-sm-6 col-md-6">
 			<div class="input-group">

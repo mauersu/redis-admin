@@ -77,7 +77,7 @@
 									</div>
 								<!-- <input name="value" class="form-control" > -->
 								</td>
-								<td><button type="button" class="update_redis_btn btn btn-primary">update</button></td>
+								<td><button type="button" class="update_redis_btn btn btn-info">update</button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -109,7 +109,7 @@
 									</div>
 								<!-- <input name="value" class="form-control" > -->
 								</td>
-								<td><button type="button" class="update_redis_btn btn btn-primary">lpush</button></td>
+								<td><button type="button" class="update_redis_btn btn btn-info">lpush</button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -140,7 +140,7 @@
 										</span>
 									</div>
 								</td>
-								<td><button type="button" class="update_redis_btn btn btn-primary">update</button></td>
+								<td><button type="button" class="update_redis_btn btn btn-info">update</button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -173,7 +173,7 @@
 									</div>
 								<!-- <input name="member" class="form-control" > -->
 								</td>
-								<td><button type="button" class="update_redis_btn btn btn-primary">update</button></td>
+								<td><button type="button" class="update_redis_btn btn btn-info">update</button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -206,7 +206,7 @@
 									</div>
 								<!-- <input name="value" class="form-control"> -->
 								</td>
-								<td><button type="button" class="update_redis_btn btn btn-primary">update</button></td>
+								<td><button type="button" class="update_redis_btn btn btn-info">update</button></td>
 							</tr>
 						</tbody>
 					</table>

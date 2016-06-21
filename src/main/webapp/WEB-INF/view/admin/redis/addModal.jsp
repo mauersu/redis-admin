@@ -77,114 +77,11 @@
 					  <input name="value" type="text" class="form-control" placeholder="value" >
 					</div>
 					
-					<!-- <span class="label label-info">STRING value</span>
-					<div class="input_div input-group">
-					  <span class="input-group-addon" >value</span>
-					  <input name="value" type="text" class="form-control" placeholder="value" >
-					</div>
-					
-					<div class="col-sm-12">
-						<br>
-					</div> 空行
-					
-					<span class="label label-info">LIST values</span>
-					<div class="input_div input-group">
-						<span class="input-group-addon">value</span>
-						<input name="value" type="text" class="requireds form-control" placeholder="value"  > 
-						<span class="input-group-btn">
-							<button class="plus_btn btn btn-default" type="button" value1="LIST">
-								<span class="glyphicon glyphicon-plus" />
-							</button>
-							<button class="minus_btn btn btn-default" type="button" value1="LIST">
-								<span class="glyphicon glyphicon-minus" />
-							</button>
-						</span>
-					</div>
-					
-					<div class="col-sm-12">
-						<br>
-					</div> 空行
-					
-					<span class="label label-info">SET values</span>
-					<div class="input_div input-group">
-						<span class="input-group-addon">value</span>
-						<input name="value" type="text" class="requireds form-control" placeholder="value"  > 
-						<span class="input-group-btn">
-							<button class="plus_btn btn btn-default" type="button" value1="SET">
-								<span class="glyphicon glyphicon-plus" />
-							</button>
-							<button class="minus_btn btn btn-default" type="button" value1="SET">
-								<span class="glyphicon glyphicon-minus" />
-							</button>
-						</span>
-					</div>
-					
-					<div class="col-sm-12">
-						<br>
-					</div> 空行
-					
-					<span class="label label-info">ZSET values</span>
-					<div class="input_div input-group col-sm-12 col-lg-12">
-						<div class="row col-sm-12 col-lg-12">
-							<div class="col-sm-6 col-lg-6">
-								<div class="input-group col-sm-12 col-lg-12">
-								  <span class="input-group-addon" >score</span>
-								  <input name="score" type="text" class="form-control" placeholder="score" >
-								</div>
-							</div>
-							<div class="col-sm-6 col-lg-6">
-								<div class="input-group col-sm-12 col-lg-12">
-									<span class="input-group-addon">member</span>
-									<input name="member" type="text" class="requireds form-control" placeholder="member"  > 
-									<span class="input-group-btn">
-										<button class="plus_btn btn btn-default" type="button" value1="ZSET">
-											<span class="glyphicon glyphicon-plus" />
-										</button>
-										<button class="minus_btn btn btn-default" type="button" value1="ZSET">
-											<span class="glyphicon glyphicon-minus" />
-										</button>
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-sm-12">
-						<br>
-					</div> 空行
-					
-					
-					<span class="label label-info">HASH values</span>
-					<div class="input_div input-group col-sm-12 col-lg-12">
-						<div class="row col-sm-12 col-lg-12">
-							<div class="col-sm-6 col-lg-6">
-								<div class="input-group col-sm-12 col-lg-12">
-								  <span class="input-group-addon" >field</span>
-								  <input name="field" type="text" class="form-control" placeholder="field" >
-								</div>
-							</div>
-							<div class="col-sm-6 col-lg-6">
-								<div class="input-group col-sm-12 col-lg-12">
-									<span class="input-group-addon">value</span>
-									<input name="value" type="text" class="requireds form-control" placeholder="value"  > 
-									<span class="input-group-btn">
-										<button class="plus_btn btn btn-default" type="button" value1="HASH">
-											<span class="glyphicon glyphicon-plus" />
-										</button>
-										<button class="minus_btn btn btn-default" type="button" value1="HASH">
-											<span class="glyphicon glyphicon-minus" />
-										</button>
-									</span>
-								</div>
-							</div>
-						</div>
-					</div> -->
-					
 				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="close_btn btn btn-default" data-dismiss="modal">close</button>
-				<button value1="add" type="button" class="add_KV_btn btn btn-primary">add</button>
+				<button value1="add" type="button" class="add_KV_btn btn btn-info">add</button>
 			</div>
 		</div>
 	</div>
