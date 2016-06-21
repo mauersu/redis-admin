@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
-<title>资讯系统</title>
+<title>redis-admin</title>
 <link href="${pageContext.request.contextPath}/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"><!-- MetisMenu CSS -->
 <link href="${pageContext.request.contextPath}/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"><!-- Custom Fonts -->
