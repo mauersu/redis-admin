@@ -20,9 +20,9 @@ This is a redis client web tool written based on Java EE and Jedis. It's my obje
  	* Support multiple language, now support English
 
 ##  Screenshots
-![Showcase](http://mauersu.github.io/img/redis-admin/redis-admin0.0.2.beta.png)
+![Showcase](http://mauersu.github.io/img/redis-admin/redis-admin0.0.2.beta2.jpg)
 
-![Showcase](http://mauersu.github.io/img/redis-admin/redis_admin_zset.png)
+![Showcase](http://mauersu.github.io/img/redis-admin/redis-admin0.0.2.beta.png)
 
 ##  Quick Start
 
