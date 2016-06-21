@@ -4,23 +4,18 @@
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!-- 右侧列表  -->
+<div class="container" style="width: 98%; align: center;">
 
-<div class="col-sm-11 col-sm-offset-1 col-md-11 col-md-offset-1 main">
+<div class="col-sm-12 col-md-12 main">
 	
-	<div class="col-sm-4 col-md-4">
+	<div class="col-sm-3 col-md-3">
 		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addServerModal" data-whatever="addServer">addServer</button>
 		<button type="button" class="refresh_btn btn btn-default" >refresh</button>
 	</div>
 	
-	<!-- <div class="row col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2"> -->
-	<div class="row col-sm-offset-4 col-md-offset-4">
-		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addModal" data-whatever="add">add</button>
-		<button type="button" class="edit_btn btn btn-info" >view/update</button>
-		<button type="button" class="delete_btn btn btn-info" value1="delete" >delete</button>
-		<button type="button" class="refresh_btn btn btn-default" >refresh</button>
-		<button type="button" class="changeShowType_btn btn btn-default" value1="${change2ShowType}" >${change2ShowType} Type</button>
-
-		<div class="col-sm-6 col-md-6">
+	<div class="row col-sm-offset-3 col-md-offset-3 ">
+	
+		<div class="col-sm-5 col-md-5">
 			<div class="input-group">
 				<div class="input-group-btn">
 					<button id="queryLabel_btn" type="button" class="btn btn-default">${queryLabel_ch }</button>
@@ -39,15 +34,23 @@
 				</span>
 			</div>
 		</div>
+		
+		<div class="col-sm-offset-5 col-md-offset-5 ">
+			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addModal" data-whatever="add">add</button>
+			<button type="button" class="edit_btn btn btn-info" >view/update</button>
+			<button type="button" class="delete_btn btn btn-info" value1="delete" >delete</button>
+			<button type="button" class="refresh_btn btn btn-default" >refresh</button>
+			<button type="button" class="changeShowType_btn btn btn-default" value1="${change2ShowType}" >${change2ShowType} Type</button>
+		</div>
 	</div>
 
-	<div class="col-sm-4 col-md-4">
+	<div class="col-sm-3 col-md-3">
 		<div class="zTreeDemoBackground left">
 			<ul id="treeDemo" class="ztree"></ul>
 		</div>
 	</div>
 	
-	<div class="table-responsive col-sm-offset-4 col-md-offset-4">
+	<div class="table-responsive col-sm-offset-3 col-md-offset-3">
 		<table id="listTable" class="table table-striped" >
 			<thead>
 				<tr>
@@ -80,6 +83,7 @@
 
 		<div id="listPagination1" class="right flickr"></div>
 	</div>
+</div>
 </div>
 
 <jsp:include page="./addModal.jsp"></jsp:include>

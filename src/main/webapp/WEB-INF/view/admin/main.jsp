@@ -26,8 +26,11 @@
 </head>
 
 <body>
+	
+	<jsp:include page="common/modelDialog.jsp"></jsp:include>
+	
 	<div id="wrapper">
-
+	
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 
@@ -42,7 +45,7 @@
 		</div>
 		<!-- /#page-wrapper -->
 
-		<jsp:include page="common/modelDialog.jsp"></jsp:include>
+		
 	</div>
 	<!-- /#wrapper -->
 	
