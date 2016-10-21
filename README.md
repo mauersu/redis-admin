@@ -36,10 +36,10 @@ redis.server.num=1
 redis.language=English
 
 #must set a default redis
-redis.host.1=10.100.142.9
-redis.name.1=10.100.142.9
+redis.host.1=127.0.0.1
+redis.name.1=127.0.0.1
 redis.port.1=6379
-redis.password.1=SH89qwIO
+redis.password.1=root
 
 redis.host.2=yours
 redis.name.2=yours
