@@ -23,11 +23,14 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.BitFieldSubCommands;
 import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.TimeoutUtils;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.types.Expiration;
 
 /**
  * Default implementation of {@link ValueOperations}.
@@ -86,6 +89,39 @@ class DefaultValueOperations<K, V> extends AbstractOperations<K, V> implements V
 			public Double doInRedis(RedisConnection connection) {
 				connection.select(dbIndex);
 				return connection.incrBy(rawKey, delta);
+			}
+		}, true);
+	}
+
+	@Override
+	public Long increment(K key) {
+		final byte[] rawKey = rawKey(key);
+		return execute(new RedisCallback<Long>() {
+			public Long doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.incr(rawKey);
+			}
+		}, true);
+	}
+
+	@Override
+	public Long decrement(K key) {
+		final byte[] rawKey = rawKey(key);
+		return execute(new RedisCallback<Long>() {
+			public Long doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.decr(rawKey);
+			}
+		}, true);
+	}
+
+	@Override
+	public Long decrement(K key, long delta) {
+		final byte[] rawKey = rawKey(key);
+		return execute(new RedisCallback<Long>() {
+			public Long doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.decrBy(rawKey, delta);
 			}
 		}, true);
 	}
@@ -243,6 +279,53 @@ class DefaultValueOperations<K, V> extends AbstractOperations<K, V> implements V
 		}, true);
 	}
 
+	@Override
+	public Boolean setIfAbsent(K key, V value, long timeout, TimeUnit unit) {
+		final byte[] rawKey = rawKey(key);
+		final byte[] rawValue = rawValue(value);
+
+		return execute(new RedisCallback<Boolean>() {
+
+			public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+				connection.select(dbIndex);
+				Expiration expiration = Expiration.from(timeout, unit);
+				return connection.set(rawKey, rawValue, expiration, RedisStringCommands.SetOption.ifAbsent());
+			}
+		}, true);
+	}
+
+	@Override
+	public Boolean setIfPresent(K key, V value) {
+
+
+		byte[] rawKey = rawKey(key);
+		byte[] rawValue = rawValue(value);
+
+		return execute(new RedisCallback<Boolean>() {
+
+			public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+				connection.select(dbIndex);
+				return connection.set(rawKey, rawValue, Expiration.persistent(), RedisStringCommands.SetOption.ifAbsent());
+			}
+		}, true);
+
+	}
+
+	@Override
+	public Boolean setIfPresent(K key, V value, long timeout, TimeUnit unit) {
+		byte[] rawKey = rawKey(key);
+		byte[] rawValue = rawValue(value);
+
+		return execute(new RedisCallback<Boolean>() {
+
+			public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+				connection.select(dbIndex);
+				Expiration expiration = Expiration.from(timeout, unit);
+				return connection.set(rawKey, rawValue, expiration, RedisStringCommands.SetOption.ifAbsent());
+			}
+		}, true);
+	}
+
 	public void set(K key, final V value, final long offset) {
 		final byte[] rawKey = rawKey(key);
 		final byte[] rawValue = rawValue(value);
@@ -265,6 +348,46 @@ class DefaultValueOperations<K, V> extends AbstractOperations<K, V> implements V
 			public Long doInRedis(RedisConnection connection) {
 				connection.select(dbIndex);
 				return connection.strLen(rawKey);
+			}
+		}, true);
+	}
+
+	@Override
+	public Boolean setBit(K key, long offset, boolean value) {
+
+		final byte[] rawKey = rawKey(key);
+
+		return execute(new RedisCallback<Boolean>() {
+
+			public Boolean doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.setBit(rawKey, offset, value);
+			}
+		}, true);
+	}
+
+	@Override
+	public Boolean getBit(K key, long offset) {
+		final byte[] rawKey = rawKey(key);
+
+		return execute(new RedisCallback<Boolean>() {
+
+			public Boolean doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.getBit(rawKey, offset);
+			}
+		}, true);
+	}
+
+	@Override
+	public List<Long> bitField(K key, BitFieldSubCommands subCommands) {
+		final byte[] rawKey = rawKey(key);
+
+		return execute(new RedisCallback<List<Long>>() {
+
+			public List<Long> doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.bitField(rawKey, subCommands);
 			}
 		}, true);
 	}

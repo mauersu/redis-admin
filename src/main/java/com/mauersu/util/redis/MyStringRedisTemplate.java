@@ -16,6 +16,7 @@
 package com.mauersu.util.redis;
 
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.data.redis.connection.DefaultStringRedisConnection;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -64,5 +65,4 @@ public class MyStringRedisTemplate extends MyRedisTemplate<String, String> {
 	protected RedisConnection preProcessConnection(RedisConnection connection, boolean existingConnection) {
 		return new DefaultStringRedisConnection(connection);
 	}
-	
 }

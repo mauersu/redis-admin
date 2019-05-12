@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.springframework.data.redis.connection.DataType;
+import org.springframework.data.redis.connection.RedisZSetCommands;
 import org.springframework.data.redis.core.BoundZSetOperations;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisOperations;
@@ -41,7 +42,6 @@ class DefaultBoundZSetOperations<K, V> extends DefaultBoundKeyOperations<K> impl
 	 * Constructs a new <code>DefaultBoundZSetOperations</code> instance.
 	 * 
 	 * @param key
-	 * @param oeprations
 	 */
 	public DefaultBoundZSetOperations(K key, RedisOperations<K, V> operations) {
 		super(key, operations);
@@ -64,12 +64,22 @@ class DefaultBoundZSetOperations<K, V> extends DefaultBoundKeyOperations<K> impl
 		return ops.getOperations();
 	}
 
-	public void intersectAndStore(K otherKey, K destKey) {
-		ops.intersectAndStore(getKey(), otherKey, destKey);
+	public Long intersectAndStore(K otherKey, K destKey) {
+		return ops.intersectAndStore(getKey(), otherKey, destKey);
 	}
 
-	public void intersectAndStore(Collection<K> otherKeys, K destKey) {
-		ops.intersectAndStore(getKey(), otherKeys, destKey);
+	public Long intersectAndStore(Collection<K> otherKeys, K destKey) {
+		return ops.intersectAndStore(getKey(), otherKeys, destKey);
+	}
+
+	@Override
+	public Long intersectAndStore(Collection<K> otherKeys, K destKey, RedisZSetCommands.Aggregate aggregate) {
+		return ops.intersectAndStore(getKey(), otherKeys, destKey, aggregate);
+	}
+
+	@Override
+	public Long intersectAndStore(Collection<K> otherKeys, K destKey, RedisZSetCommands.Aggregate aggregate, RedisZSetCommands.Weights weights) {
+		return ops.intersectAndStore(getKey(), otherKeys, destKey, aggregate, weights);
 	}
 
 	public Set<V> range(long start, long end) {
@@ -116,12 +126,12 @@ class DefaultBoundZSetOperations<K, V> extends DefaultBoundKeyOperations<K> impl
 		return ops.remove(getKey(), values);
 	}
 
-	public void removeRange(long start, long end) {
-		ops.removeRange(getKey(), start, end);
+	public Long removeRange(long start, long end) {
+		return ops.removeRange(getKey(), start, end);
 	}
 
-	public void removeRangeByScore(double min, double max) {
-		ops.removeRangeByScore(getKey(), min, max);
+	public Long removeRangeByScore(double min, double max) {
+		return ops.removeRangeByScore(getKey(), min, max);
 	}
 
 	public Set<V> reverseRange(long start, long end) {
@@ -150,12 +160,22 @@ class DefaultBoundZSetOperations<K, V> extends DefaultBoundKeyOperations<K> impl
 		return ops.zCard(getKey());
 	}
 
-	public void unionAndStore(K otherKey, K destKey) {
-		ops.unionAndStore(getKey(), otherKey, destKey);
+	public Long unionAndStore(K otherKey, K destKey) {
+		return ops.unionAndStore(getKey(), otherKey, destKey);
 	}
 
-	public void unionAndStore(Collection<K> otherKeys, K destKey) {
-		ops.unionAndStore(getKey(), otherKeys, destKey);
+	public Long unionAndStore(Collection<K> otherKeys, K destKey) {
+		return ops.unionAndStore(getKey(), otherKeys, destKey);
+	}
+
+	@Override
+	public Long unionAndStore(Collection<K> otherKeys, K destKey, RedisZSetCommands.Aggregate aggregate) {
+		return ops.unionAndStore(getKey(), otherKeys, destKey, aggregate);
+	}
+
+	@Override
+	public Long unionAndStore(Collection<K> otherKeys, K destKey, RedisZSetCommands.Aggregate aggregate, RedisZSetCommands.Weights weights) {
+		return ops.unionAndStore(getKey(), otherKeys, destKey, aggregate, weights);
 	}
 
 	public DataType getType() {
@@ -169,5 +189,15 @@ class DefaultBoundZSetOperations<K, V> extends DefaultBoundKeyOperations<K> impl
 	@Override
 	public Cursor<TypedTuple<V>> scan(ScanOptions options) {
 		return ops.scan(getKey(), options);
+	}
+
+	@Override
+	public Set<V> rangeByLex(RedisZSetCommands.Range range) {
+		return ops.rangeByLex(getKey(), range);
+	}
+
+	@Override
+	public Set<V> rangeByLex(RedisZSetCommands.Range range, RedisZSetCommands.Limit limit) {
+		return ops.rangeByLex(getKey(), range, limit);
 	}
 }

@@ -22,6 +22,7 @@ import java.util.Set;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisZSetCommands;
 import org.springframework.data.redis.connection.RedisZSetCommands.Tuple;
 import org.springframework.data.redis.core.ConvertingCursor;
 import org.springframework.data.redis.core.Cursor;
@@ -101,6 +102,20 @@ class DefaultZSetOperations<K, V> extends AbstractOperations<K, V> implements ZS
 				return connection.zInterStore(rawDestKey, rawKeys);
 			}
 		}, true);
+	}
+
+	@Override
+	public Long intersectAndStore(K key, Collection<K> otherKeys, K destKey, RedisZSetCommands.Aggregate aggregate, RedisZSetCommands.Weights weights) {
+		final byte[][] rawKeys = rawKeys(key, otherKeys);
+		final byte[] rawDestKey = rawKey(destKey);
+		return execute(new RedisCallback<Long>() {
+
+			public Long doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.zInterStore(rawDestKey, aggregate, weights, rawKeys);
+			}
+		}, true);
+
 	}
 
 	public Set<V> range(K key, final long start, final long end) {
@@ -405,6 +420,19 @@ class DefaultZSetOperations<K, V> extends AbstractOperations<K, V> implements ZS
 		}, true);
 	}
 
+	@Override
+	public Long unionAndStore(K key, Collection<K> otherKeys, K destKey, RedisZSetCommands.Aggregate aggregate, RedisZSetCommands.Weights weights) {
+		final byte[][] rawKeys = rawKeys(key, otherKeys);
+		final byte[] rawDestKey = rawKey(destKey);
+		return execute(new RedisCallback<Long>() {
+
+			public Long doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.zUnionStore(rawDestKey, aggregate, weights, rawKeys);
+			}
+		}, true);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.data.redis.core.ZSetOperations#scan(java.lang.Object, org.springframework.data.redis.core.ScanOptions)
@@ -429,5 +457,32 @@ class DefaultZSetOperations<K, V> extends AbstractOperations<K, V> implements ZS
 				return deserializeTuple(source);
 			}
 		});
+	}
+
+	@Override
+	public Set<V> rangeByLex(K key, RedisZSetCommands.Range range) {
+		byte[] rawKey = rawKey(key);
+		Set<byte[]> rawValues =  execute(new RedisCallback<Set<byte[]>>() {
+
+			public Set<byte[]> doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.zRangeByLex(rawKey, range);
+			}
+		}, true);
+		return deserializeValues(rawValues);
+	}
+
+	@Override
+	public Set<V> rangeByLex(K key, RedisZSetCommands.Range range, RedisZSetCommands.Limit limit) {
+
+		byte[] rawKey = rawKey(key);
+		Set<byte[]> rawValues =  execute(new RedisCallback<Set<byte[]>>() {
+
+			public Set<byte[]> doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.zRangeByLex(rawKey, range, limit);
+			}
+		}, true);
+		return deserializeValues(rawValues);
 	}
 }

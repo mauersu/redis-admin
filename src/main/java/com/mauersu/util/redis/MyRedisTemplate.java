@@ -83,35 +83,34 @@ public class MyRedisTemplate<K, V> extends RedisTemplate<K, V> {
 	
 	// delete 
 	@Override
-	public void delete(K key) {
+	public Boolean delete(K key) {
 		final byte[] rawKey = rawKey(key);
 
-		execute(new RedisCallback<Object>() {
+		Long result = execute(new RedisCallback<Long>() {
 
-			public Object doInRedis(RedisConnection connection) {
+			public Long doInRedis(RedisConnection connection) {
 				int dbIndex = RedisApplication.redisConnectionDbIndex.get();
 				connection.select(dbIndex);
-				connection.del(rawKey);
-				return null;
+				return connection.del(rawKey);
 			}
 		}, true);
+		return result != null && result.intValue() == 1;
 	}
 	
 	@Override
-	public void delete(Collection<K> keys) {
+	public Long delete(Collection<K> keys) {
 		if (CollectionUtils.isEmpty(keys)) {
-			return;
+			return null;
 		}
 
 		final byte[][] rawKeys = rawKeys(keys);
 
-		execute(new RedisCallback<Object>() {
+		return execute(new RedisCallback<Long>() {
 
-			public Object doInRedis(RedisConnection connection) {
+			public Long doInRedis(RedisConnection connection) {
 				int dbIndex = RedisApplication.redisConnectionDbIndex.get();
 				connection.select(dbIndex);
-				connection.del(rawKeys);
-				return null;
+				return connection.del(rawKeys);
 			}
 		}, true);
 	}

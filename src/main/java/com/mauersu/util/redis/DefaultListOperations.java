@@ -15,6 +15,7 @@
  */
 package com.mauersu.util.redis;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -86,6 +87,18 @@ class DefaultListOperations<K, V> extends AbstractOperations<K, V> implements Li
 	}
 
 	public Long leftPushAll(K key, V... values) {
+		final byte[] rawKey = rawKey(key);
+		final byte[][] rawValues = rawValues(values);
+		return execute(new RedisCallback<Long>() {
+			public Long doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.lPush(rawKey, rawValues);
+			}
+		}, true);
+	}
+
+	@Override
+	public Long leftPushAll(K key, Collection<V> values) {
 		final byte[] rawKey = rawKey(key);
 		final byte[][] rawValues = rawValues(values);
 		return execute(new RedisCallback<Long>() {
@@ -190,6 +203,18 @@ class DefaultListOperations<K, V> extends AbstractOperations<K, V> implements Li
 	}
 
 	public Long rightPushAll(K key, V... values) {
+		final byte[] rawKey = rawKey(key);
+		final byte[][] rawValues = rawValues(values);
+		return execute(new RedisCallback<Long>() {
+			public Long doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.rPush(rawKey, rawValues);
+			}
+		}, true);
+	}
+
+	@Override
+	public Long rightPushAll(K key, Collection<V> values) {
 		final byte[] rawKey = rawKey(key);
 		final byte[][] rawValues = rawValues(values);
 		return execute(new RedisCallback<Long>() {

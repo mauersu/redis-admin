@@ -119,6 +119,20 @@ class DefaultHashOperations<K, HK, HV> extends AbstractOperations<K, Object> imp
 		return deserializeHashKeys(rawValues);
 	}
 
+	@Override
+	public Long lengthOfValue(K key, HK hashKey) {
+		byte[] rawKey = rawKey(key);
+		byte[] rawHashKey = rawHashKey(hashKey);
+
+		return execute(new RedisCallback<Long>() {
+
+			public Long doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.hStrLen(rawKey, rawHashKey);
+			}
+		}, true);
+	}
+
 	public Long size(K key) {
 		final byte[] rawKey = rawKey(key);
 
@@ -222,16 +236,15 @@ class DefaultHashOperations<K, HK, HV> extends AbstractOperations<K, Object> imp
 		return deserializeHashValues(rawValues);
 	}
 
-	public void delete(K key, Object... hashKeys) {
+	public Long delete(K key, Object... hashKeys) {
 		final byte[] rawKey = rawKey(key);
 		final byte[][] rawHashKeys = rawHashKeys(hashKeys);
 
-		execute(new RedisCallback<Object>() {
+		return execute(new RedisCallback<Long>() {
 
-			public Object doInRedis(RedisConnection connection) {
+			public Long doInRedis(RedisConnection connection) {
 				connection.select(dbIndex);
-				connection.hDel(rawKey, rawHashKeys);
-				return null;
+				return connection.hDel(rawKey, rawHashKeys);
 			}
 		}, true);
 	}

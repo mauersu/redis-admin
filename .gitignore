@@ -1,21 +1,29 @@
-.metadata
-.idea
-bin/
-tmp/
-local.properties
-.settings/
-.loadpath
+HELP.md
+/target/
+!.mvn/wrapper/maven-wrapper.jar
 
-# Eclipse project files
+### STS ###
+.apt_generated
 .classpath
+.factorypath
 .project
-.settings/
-# Others
-target/
-logs/
-.svn
-META-INF/
+.settings
+.springBeans
+.sts4-cache
 
-pom.xml.releaseBackup
-/release.properties
-dependency-reduced-pom.xml
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+/build/
+
+### VS Code ###
+.vscode/

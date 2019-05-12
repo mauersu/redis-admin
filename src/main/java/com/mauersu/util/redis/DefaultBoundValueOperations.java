@@ -48,12 +48,27 @@ class DefaultBoundValueOperations<K, V> extends DefaultBoundKeyOperations<K> imp
 		return ops.getAndSet(getKey(), value);
 	}
 
+	@Override
+	public Long increment() {
+		return ops.increment(getKey());
+	}
+
 	public Long increment(long delta) {
 		return ops.increment(getKey(), delta);
 	}
 
 	public Double increment(double delta) {
 		return ops.increment(getKey(), delta);
+	}
+
+	@Override
+	public Long decrement() {
+		return ops.decrement(getKey());
+	}
+
+	@Override
+	public Long decrement(long delta) {
+		return ops.decrement(getKey(), delta);
 	}
 
 	public Integer append(String value) {
@@ -74,6 +89,21 @@ class DefaultBoundValueOperations<K, V> extends DefaultBoundKeyOperations<K> imp
 
 	public Boolean setIfAbsent(V value) {
 		return ops.setIfAbsent(getKey(), value);
+	}
+
+	@Override
+	public Boolean setIfAbsent(V value, long timeout, TimeUnit unit) {
+		return ops.setIfAbsent(getKey(), value, timeout, unit);
+	}
+
+	@Override
+	public Boolean setIfPresent(V value) {
+		return ops.setIfPresent(getKey(), value);
+	}
+
+	@Override
+	public Boolean setIfPresent(V value, long timeout, TimeUnit unit) {
+		return ops.setIfPresent(getKey(), value, timeout, unit);
 	}
 
 	public void set(V value, long offset) {

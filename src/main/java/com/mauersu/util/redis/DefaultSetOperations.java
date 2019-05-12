@@ -230,6 +230,21 @@ class DefaultSetOperations<K, V> extends AbstractOperations<K, V> implements Set
 		}, true);
 	}
 
+	@Override
+	public List<V> pop(K key, long count) {
+		byte[] rawKey = rawKey(key);
+
+		List<byte[]> rawValues = execute(new RedisCallback<List<byte[]>>() {
+
+			public List<byte[]> doInRedis(RedisConnection connection) {
+				connection.select(dbIndex);
+				return connection.sPop(rawKey, count);
+			}
+		}, true);
+
+		return deserializeValues(rawValues);
+	}
+
 	public Long size(K key) {
 		final byte[] rawKey = rawKey(key);
 		return execute(new RedisCallback<Long>() {
