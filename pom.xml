@@ -9,7 +9,7 @@
 	</parent>
     <groupId>com.mauersu</groupId>
     <artifactId>redis-admin</artifactId>
-    <version>0.0.3.Alpha-SNAPSHOT</version>
+    <version>0.0.3.Alpha</version>
     <packaging>war</packaging>
 
     <name>redis admin</name>
